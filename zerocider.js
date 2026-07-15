@@ -88,6 +88,7 @@ document.addEventListener('DOMContentLoaded',()=>{
   /* Прогресс героя + зоны плашек */
   const hero=document.getElementById('hero');
   const panels=[...document.querySelectorAll('.panel')];
+  let activePanel=-1;
   const cue=document.getElementById('cue');
   let target=0, current=0;
   const paras=[...document.querySelectorAll('[data-para]')];
@@ -134,12 +135,17 @@ document.addEventListener('DOMContentLoaded',()=>{
     target=p*(FRAMES.length-1);
     queueCanvas();
     cue.classList.toggle('hide',p>0.04);
-    panels.forEach((pl,i)=>{
-      const a=i/panels.length,b=(i+1)/panels.length;
-      const last=i===panels.length-1;
-      pl.classList.toggle('on',p>=a-0.02&&(last||p<b-0.02));
-      pl.classList.toggle('past',!last&&p>=b-0.02);
-    });
+    const panelIndex=Math.min(panels.length-1,Math.floor(p*panels.length));
+    if(panelIndex!==activePanel){
+      panels.forEach((pl,i)=>{
+        const isActive=i===panelIndex;
+        pl.classList.toggle('on',isActive);
+        pl.classList.toggle('past',i<panelIndex);
+        pl.classList.toggle('future',i>panelIndex);
+        pl.setAttribute('aria-hidden',String(!isActive));
+      });
+      activePanel=panelIndex;
+    }
     progress.style.transform='scaleX('+Math.min(1,Math.max(0,y/metrics.pageRange))+')';
     nav.classList.toggle('solid',y>30);
     if(backToTop)backToTop.classList.toggle('show',y>700);
