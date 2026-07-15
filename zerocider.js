@@ -9,9 +9,15 @@ document.addEventListener('DOMContentLoaded',()=>{
 
   /* Курсорное свечение */
   const glow=document.getElementById('glow');
-  window.addEventListener('pointermove',e=>{
-    glow.style.transform='translate3d('+(e.clientX-210)+'px,'+(e.clientY-210)+'px,0)';
-  },{passive:true});
+  let glowRAF=0,glowX=-520,glowY=-520;
+  if(glow&&!mobile&&!reduced){
+    window.addEventListener('pointermove',e=>{
+      glowX=e.clientX-210;glowY=e.clientY-210;
+      if(!glowRAF)glowRAF=requestAnimationFrame(()=>{
+        glowRAF=0;glow.style.transform='translate3d('+glowX+'px,'+glowY+'px,0)';
+      });
+    },{passive:true});
+  }
 
   /* Навбар + бургер */
   const nav=document.getElementById('nav');
@@ -19,7 +25,6 @@ document.addEventListener('DOMContentLoaded',()=>{
   const navlinks=document.getElementById('navlinks');
   function setMenu(open){
     const next=Boolean(open)&&mobileQuery.matches;
-    document.documentElement.classList.toggle('menu-open',next);
     document.body.classList.toggle('menu-open',next);
     navlinks.classList.toggle('open',next);
     burger.setAttribute('aria-expanded',String(next));
@@ -35,66 +40,89 @@ document.addEventListener('DOMContentLoaded',()=>{
   const MQ='<span>0.0% алкоголя</span><span class="o">•</span><span>Настоящий сидровый вкус</span><span class="o">•</span><span>ГОСТ</span><span class="o">•</span><span>White Phoenix</span><span class="o">•</span><span>Сделано в России</span><span class="o">•</span>';
   ['mq1','mq2'].forEach(id=>{const t=document.getElementById(id); if(t) t.innerHTML=MQ+MQ;});
 
-  /* Искры */
-  const emb=document.getElementById('embers');
-  const nEmb = mobile? 9 : 16;
-  for(let i=0;i<nEmb;i++){const d=document.createElement('div');d.className='ember';
-    const s=2+Math.random()*3.5;d.style.width=s+'px';d.style.height=s+'px';
-    d.style.left=(Math.random()*100)+'%';
-    d.style.setProperty('--dx',(Math.random()*60-30)+'px');
-    d.style.animationDuration=(7+Math.random()*8)+'s';
-    d.style.animationDelay=(Math.random()*9)+'s';
-    emb.appendChild(d);}
-
   /* Скролл-скраб: предзагруженные кадры высокого качества */
   const FRAMES = ["https://sidrhaus-create.github.io/si/assets/zerocider_asset_04_3cc9473f5b.webp","https://sidrhaus-create.github.io/si/assets/zerocider_asset_05_110b95d500.webp","https://sidrhaus-create.github.io/si/assets/zerocider_asset_06_0042483a6d.webp","https://sidrhaus-create.github.io/si/assets/zerocider_asset_07_7d883bb8d9.webp","https://sidrhaus-create.github.io/si/assets/zerocider_asset_08_74113ad742.webp","https://sidrhaus-create.github.io/si/assets/zerocider_asset_09_b8fe38f754.webp","https://sidrhaus-create.github.io/si/assets/zerocider_asset_10_316c70033b.webp","https://sidrhaus-create.github.io/si/assets/zerocider_asset_11_29124efd7d.webp","https://sidrhaus-create.github.io/si/assets/zerocider_asset_12_dacd47fe05.webp","https://sidrhaus-create.github.io/si/assets/zerocider_asset_13_a85cd989fa.webp","https://sidrhaus-create.github.io/si/assets/zerocider_asset_14_a6b37278fe.webp","https://sidrhaus-create.github.io/si/assets/zerocider_asset_15_13a2cd2bd3.webp","https://sidrhaus-create.github.io/si/assets/zerocider_asset_16_8e95e9431e.webp","https://sidrhaus-create.github.io/si/assets/zerocider_asset_17_82c1fd5af2.webp","https://sidrhaus-create.github.io/si/assets/zerocider_asset_18_7f91864136.webp","https://sidrhaus-create.github.io/si/assets/zerocider_asset_19_3da363a942.webp","https://sidrhaus-create.github.io/si/assets/zerocider_asset_20_2e467b653c.webp","https://sidrhaus-create.github.io/si/assets/zerocider_asset_21_0857dc7afd.webp","https://sidrhaus-create.github.io/si/assets/zerocider_asset_22_a5f134ace7.webp","https://sidrhaus-create.github.io/si/assets/zerocider_asset_23_46e5e44eb2.webp","https://sidrhaus-create.github.io/si/assets/zerocider_asset_24_9970f2717c.webp","https://sidrhaus-create.github.io/si/assets/zerocider_asset_25_918a64e7fe.webp","https://sidrhaus-create.github.io/si/assets/zerocider_asset_26_283b29d32d.webp","https://sidrhaus-create.github.io/si/assets/zerocider_asset_27_d6b109955a.webp","https://sidrhaus-create.github.io/si/assets/zerocider_asset_28_1f98f3be77.webp","https://sidrhaus-create.github.io/si/assets/zerocider_asset_29_e14c4dcfff.webp","https://sidrhaus-create.github.io/si/assets/zerocider_asset_30_59f773ef2d.webp","https://sidrhaus-create.github.io/si/assets/zerocider_asset_31_97b4d35409.webp","https://sidrhaus-create.github.io/si/assets/zerocider_asset_32_258a1b6b3f.webp","https://sidrhaus-create.github.io/si/assets/zerocider_asset_33_9944ff48c8.webp","https://sidrhaus-create.github.io/si/assets/zerocider_asset_34_0131310e38.webp","https://sidrhaus-create.github.io/si/assets/zerocider_asset_35_ada020edac.webp","https://sidrhaus-create.github.io/si/assets/zerocider_asset_36_c52f45b74c.webp","https://sidrhaus-create.github.io/si/assets/zerocider_asset_37_c6911efaa7.webp","https://sidrhaus-create.github.io/si/assets/zerocider_asset_38_37eeee3c6d.webp","https://sidrhaus-create.github.io/si/assets/zerocider_asset_39_b7b99c04f1.webp","https://sidrhaus-create.github.io/si/assets/zerocider_asset_40_d43dd9ba55.webp","https://sidrhaus-create.github.io/si/assets/zerocider_asset_41_4fc4190631.webp","https://sidrhaus-create.github.io/si/assets/zerocider_asset_42_20f04c766c.webp","https://sidrhaus-create.github.io/si/assets/zerocider_asset_43_0a5cfb9fb6.webp","https://sidrhaus-create.github.io/si/assets/zerocider_asset_44_6fdac8774f.webp","https://sidrhaus-create.github.io/si/assets/zerocider_asset_45_97c7008e46.webp","https://sidrhaus-create.github.io/si/assets/zerocider_asset_46_42061d4026.webp","https://sidrhaus-create.github.io/si/assets/zerocider_asset_47_c7fed475b5.webp","https://sidrhaus-create.github.io/si/assets/zerocider_asset_48_031d8ff843.webp","https://sidrhaus-create.github.io/si/assets/zerocider_asset_49_4d716a4f63.webp","https://sidrhaus-create.github.io/si/assets/zerocider_asset_50_e068148b50.webp","https://sidrhaus-create.github.io/si/assets/zerocider_asset_51_86a0038d0e.webp","https://sidrhaus-create.github.io/si/assets/zerocider_asset_52_0dabf6b71f.webp"];
+  const FRAME_SEQUENCE=mobile
+    ? FRAMES.filter((_,i)=>i%2===0||i===FRAMES.length-1)
+    : FRAMES;
   const canvas=document.getElementById('scrub');
-  const ctx=canvas.getContext('2d',{alpha:false});
-  const imgs=new Array(FRAMES.length);
-  let cw=0, ch=0;
+  const ctx=canvas.getContext('2d',{alpha:false,desynchronized:true});
+  const imgs=new Array(FRAME_SEQUENCE.length);
+  let cw=0,ch=0,requestedFrame=0,lastDrawn=-1,canvasRAF=0;
 
+  function queueCanvas(){
+    if(!canvasRAF)canvasRAF=requestAnimationFrame(()=>{
+      canvasRAF=0;drawFrame(requestedFrame);
+    });
+  }
   function loadFrame(i,priority='auto'){
-    if(imgs[i])return imgs[i];
+    if(imgs[i]){
+      if(priority==='high')imgs[i].fetchPriority='high';
+      return imgs[i];
+    }
     const im=new Image();
     im.decoding='async';
     im.fetchPriority=priority;
-    im.onload=queueCanvas;
-    im.src=FRAMES[i];
+    im.onload=()=>{if(i===requestedFrame||(i===0&&lastDrawn<0))queueCanvas();};
+    im.onerror=()=>{if(i===requestedFrame)queueCanvas();};
+    im.src=FRAME_SEQUENCE[i];
     imgs[i]=im;
     return im;
   }
-  loadFrame(0,'high');
-  loadFrame(1,'high');
-  const preloadFrames=()=>FRAMES.forEach((_,i)=>loadFrame(i,i<4?'high':'low'));
-  if('requestIdleCallback' in window)requestIdleCallback(preloadFrames,{timeout:1800});
-  else setTimeout(preloadFrames,450);
+
+  [0,1,2].forEach(i=>{if(i<FRAME_SEQUENCE.length)loadFrame(i,'high');});
+  if(FRAME_SEQUENCE.length>3)loadFrame(FRAME_SEQUENCE.length-1,'low');
+  let preloadCursor=Math.min(3,FRAME_SEQUENCE.length);
+  function schedulePreload(){
+    if(preloadCursor>=FRAME_SEQUENCE.length)return;
+    if('requestIdleCallback' in window)requestIdleCallback(preloadBatch,{timeout:1000});
+    else setTimeout(()=>preloadBatch(),140);
+  }
+  function preloadBatch(deadline){
+    let count=0;
+    while(preloadCursor<FRAME_SEQUENCE.length&&count<3&&
+      (!deadline||deadline.didTimeout||deadline.timeRemaining()>4)){
+      loadFrame(preloadCursor,'low');preloadCursor++;count++;
+    }
+    schedulePreload();
+  }
+  schedulePreload();
 
   function resizeCanvas(){
-    const dpr=Math.min(devicePixelRatio||1, 2);
-    cw=canvas.clientWidth; ch=canvas.clientHeight;
-    canvas.width=cw*dpr; canvas.height=ch*dpr;
+    const dpr=Math.min(devicePixelRatio||1,2);
+    cw=canvas.clientWidth;ch=canvas.clientHeight;
+    canvas.width=Math.max(1,Math.round(cw*dpr));
+    canvas.height=Math.max(1,Math.round(ch*dpr));
     ctx.setTransform(dpr,0,0,dpr,0,0);
-    ctx.fillStyle='#3B1943';
+    ctx.imageSmoothingEnabled=true;
+    ctx.imageSmoothingQuality='high';
+    ctx.fillStyle='#5D2F6A';
     ctx.fillRect(0,0,cw,ch);
+    lastDrawn=-1;
   }
 
-  function drawImg(im){
-    if(!im || !im.complete || !im.naturalWidth) return;
-    const iw=im.naturalWidth, ih=im.naturalHeight;
-    const s=Math.max(cw/iw, ch/ih);
-    const w=iw*s, h=ih*s;
-    ctx.drawImage(im, (cw-w)/2, (ch-h)/2, w, h);
-  }
-  function drawFrame(f){
-    const i=Math.max(0, Math.min(FRAMES.length-1, Math.round(f)));
-    let im=loadFrame(i,i<4?'high':'auto');
-    if(!im.complete || !im.naturalWidth){
-      for(let d=1;d<FRAMES.length;d++){
-        const near=imgs[i-d]||imgs[i+d];
-        if(near?.complete && near.naturalWidth){im=near;break;}
-      }
+  function findLoadedFrame(index){
+    const exact=imgs[index];
+    if(exact?.complete&&exact.naturalWidth)return index;
+    for(let d=1;d<FRAME_SEQUENCE.length;d++){
+      const before=index-d,after=index+d;
+      if(before>=0&&imgs[before]?.complete&&imgs[before].naturalWidth)return before;
+      if(after<FRAME_SEQUENCE.length&&imgs[after]?.complete&&imgs[after].naturalWidth)return after;
     }
-    drawImg(im);
+    return -1;
+  }
+  function drawFrame(frameIndex){
+    const i=Math.max(0,Math.min(FRAME_SEQUENCE.length-1,Math.round(frameIndex)));
+    loadFrame(i,'high');
+    const loadedIndex=findLoadedFrame(i);
+    if(loadedIndex<0||loadedIndex===lastDrawn)return;
+    const im=imgs[loadedIndex];
+    const scale=Math.min(cw/im.naturalWidth,ch/im.naturalHeight);
+    const width=im.naturalWidth*scale,height=im.naturalHeight*scale;
+    ctx.fillStyle='#5D2F6A';
+    ctx.fillRect(0,0,cw,ch);
+    ctx.drawImage(im,(cw-width)/2,(ch-height)/2,width,height);
+    lastDrawn=loadedIndex;
   }
 
   /* Прогресс героя + зоны плашек */
@@ -102,34 +130,24 @@ document.addEventListener('DOMContentLoaded',()=>{
   const panels=[...document.querySelectorAll('.panel')];
   let activePanel=null;
   const cue=document.getElementById('cue');
-  let target=0, current=0;
   const paras=[...document.querySelectorAll('[data-para]')];
   const pipe=document.getElementById('pipe');
   const spineFill=document.getElementById('spinefill');
   const progress=document.getElementById('progress');
   const backToTop=document.getElementById('backtotop');
-  const metrics={heroTop:0,heroHeight:0,heroRange:1,pipeTop:0,pipeHeight:1,pageRange:1};
+  const metrics={heroTop:0,heroHeight:0,heroRange:1,videoDistance:1,panelStep:1,pipeTop:0,pipeHeight:1,pageRange:1};
   const paraMetrics=paras.map(el=>({el,center:0,amt:parseFloat(el.dataset.para)||0.1}));
-  let canvasRAF=0,scrollRAF=0,measureRAF=0;
-
-  function renderCanvas(){
-    canvasRAF=0;
-    const smooth = reduced || target>=FRAMES.length-1 ? 1 : 0.16;
-    current += (target-current)*smooth;
-    if(Math.abs(target-current)<0.03)current=target;
-    drawFrame(current);
-    if(current!==target)canvasRAF=requestAnimationFrame(renderCanvas);
-  }
-  function queueCanvas(){
-    if(!canvasRAF)canvasRAF=requestAnimationFrame(renderCanvas);
-  }
+  let scrollRAF=0,measureRAF=0;
   function docTop(el){return scrollY+el.getBoundingClientRect().top;}
   function measure(){
     measureRAF=0;
     resizeCanvas();
+    queueCanvas();
     metrics.heroTop=docTop(hero);
     metrics.heroHeight=hero.offsetHeight;
     metrics.heroRange=Math.max(1,metrics.heroHeight-innerHeight);
+    metrics.videoDistance=innerHeight*3;
+    metrics.panelStep=innerHeight;
     metrics.pipeTop=pipe?docTop(pipe):0;
     metrics.pipeHeight=pipe?Math.max(1,pipe.offsetHeight):1;
     metrics.pageRange=Math.max(1,document.documentElement.scrollHeight-innerHeight);
@@ -143,14 +161,13 @@ document.addEventListener('DOMContentLoaded',()=>{
     scrollRAF=0;
     const y=window.scrollY;
     const vh=window.innerHeight;
-    const p=Math.min(1,Math.max(0,(y-metrics.heroTop)/metrics.heroRange));
-    const videoProgress=Math.min(1,Math.max(0,p/0.5));
-    target=videoProgress*(FRAMES.length-1);
-    queueCanvas();
-    cue.classList.toggle('hide',p>0.02);
-    const panelProgress=Math.min(1,Math.max(0,(p-0.5)/0.5));
-    const panelZone=Math.floor(panelProgress*panels.length+1e-7);
-    const panelIndex=p<0.5?-1:Math.min(panels.length-1,panelZone);
+    const heroY=Math.min(metrics.heroRange,Math.max(0,y-metrics.heroTop));
+    const videoProgress=Math.min(1,Math.max(0,heroY/metrics.videoDistance));
+    const frameIndex=Math.round(videoProgress*(FRAME_SEQUENCE.length-1));
+    if(frameIndex!==requestedFrame){requestedFrame=frameIndex;queueCanvas();}
+    cue.classList.toggle('hide',heroY>vh*.04);
+    const panelY=heroY-metrics.videoDistance;
+    const panelIndex=panelY<0?-1:Math.min(panels.length-1,Math.floor(panelY/metrics.panelStep));
     if(panelIndex!==activePanel){
       panels.forEach((pl,i)=>{
         const isActive=panelIndex>=0&&i===panelIndex;
@@ -163,7 +180,7 @@ document.addEventListener('DOMContentLoaded',()=>{
     }
     progress.style.transform='scaleX('+Math.min(1,Math.max(0,y/metrics.pageRange))+')';
     nav.classList.toggle('solid',y>30);
-    if(backToTop)backToTop.classList.toggle('show',y>700);
+    if(backToTop)backToTop.classList.toggle('show',y>metrics.heroTop+metrics.heroHeight);
     paraMetrics.forEach(item=>{
       const c=(item.center-y-vh/2)/vh;
       item.el.style.transform='translateY('+(-c*item.amt*100)+'px)';

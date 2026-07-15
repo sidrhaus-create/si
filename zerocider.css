@@ -29,14 +29,14 @@
   --stroke-hi:rgba(255,255,255,.5);
 }
 *{margin:0;padding:0;box-sizing:border-box}
-html{scroll-behavior:smooth;overscroll-behavior-y:contain;overflow-x:hidden}
+html{scroll-behavior:smooth;overflow-x:clip}
 body{
   font-family:var(--f-body);font-weight:500;
   background:linear-gradient(180deg,#241028 0%,#3B1943 48%,#241028 100%);color:var(--white);
-  overflow-x:hidden;line-height:1.55;
-  -webkit-font-smoothing:antialiased;overscroll-behavior-y:contain;
+  overflow-x:clip;line-height:1.55;
+  -webkit-font-smoothing:antialiased;
 }
-html.menu-open,body.menu-open{overflow:hidden;overscroll-behavior:none;touch-action:none}
+body.menu-open{overflow:hidden;overscroll-behavior:none;touch-action:none}
 ::selection{background:var(--purple);color:var(--white)}
 img,svg{display:block;max-width:100%}
 a{color:inherit;text-decoration:none}
@@ -73,33 +73,10 @@ a{color:inherit;text-decoration:none}
   transform-origin:center;transition:transform .3s ease,opacity .25s ease,background .25s ease}
 
 /* ============ HERO ============ */
-#hero{height:600vh;height:600svh;position:relative;touch-action:pan-y}
-.stage{position:sticky;top:0;height:100vh;height:100svh;overflow:hidden;
-  background:
-    radial-gradient(115% 88% at 50% 22%, #774282 0%, #6B3077 34%, #3B1943 76%, #241028 100%),
-    #241028;touch-action:pan-y}
-#scrub,#scrubvid{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;touch-action:pan-y}
+#hero{height:700vh;height:700svh;position:relative}
+.stage{position:sticky;top:0;height:100vh;height:100svh;overflow:hidden;background:#5D2F6A}
+#scrub,#scrubvid{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;pointer-events:none}
 #scrubvid{opacity:0;pointer-events:none;position:absolute;width:1px;height:1px;top:-9999px}
-.stage:after{content:'';position:absolute;inset:0;pointer-events:none;
-  background:
-    linear-gradient(180deg, rgba(59,25,67,.42) 0%, transparent 24%, transparent 48%, rgba(36,16,40,.9) 100%),
-    radial-gradient(80% 60% at 50% 50%, transparent 55%, rgba(107,48,119,.22) 100%)}
-#embers{position:absolute;inset:0;overflow:hidden;pointer-events:none;z-index:2}
-.ember{position:absolute;bottom:-14px;border-radius:50%;background:var(--lilac);opacity:0;
-  animation:rise linear infinite;box-shadow:0 0 10px rgba(139,74,156,.5)}
-@keyframes rise{
-  0%{transform:translateY(0) translateX(0);opacity:0}
-  12%{opacity:.8}
-  100%{transform:translateY(-108vh) translateX(var(--dx,20px));opacity:0}
-}
-
-/* Вращающийся знак феникса */
-#badge{position:absolute;z-index:5;right:clamp(14px,4vw,56px);top:calc(72px + env(safe-area-inset-top));
-  width:clamp(84px,11vw,128px);height:clamp(84px,11vw,128px);padding:6px;pointer-events:none;
-  display:grid;place-items:center}
-#badge img{width:100%;height:100%;object-fit:contain;animation:spin 22s linear infinite;transform-origin:50% 50%;
-  filter:drop-shadow(0 5px 12px rgba(36,16,40,.38))}
-@keyframes spin{to{transform:rotate(360deg)}}
 
 /* Плашки героя — плотные, читабельные */
 .panel{position:absolute;z-index:6;left:50%;bottom:calc(30px + env(safe-area-inset-bottom));
@@ -419,7 +396,6 @@ footer li a:hover{opacity:1;text-decoration:underline}
   #nav .logo svg,#nav .logo img{height:41px}
   #nav.solid .logo svg,#nav.solid .logo img{height:35px}
   .panel{padding:19px 18px 20px}
-  #badge{top:calc(60px + env(safe-area-inset-top));right:14px}
   .feats{grid-template-columns:1fr 1fr;gap:10px}
   .feat{padding:17px 14px}
   .feat h3{font-size:15px}
