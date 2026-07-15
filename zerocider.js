@@ -3,7 +3,8 @@ document.addEventListener('DOMContentLoaded',()=>{
   document.querySelectorAll('.draw [data-line]').forEach(el=>el.setAttribute('pathLength','1'));
   document.querySelectorAll('.draw .hatch').forEach(el=>el.setAttribute('pathLength','1'));
 
-  const mobile = matchMedia('(max-width:900px)').matches;
+  const mobileQuery = matchMedia('(max-width:900px)');
+  const mobile = mobileQuery.matches;
   const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
 
   /* Курсорное свечение */
@@ -16,8 +17,19 @@ document.addEventListener('DOMContentLoaded',()=>{
   const nav=document.getElementById('nav');
   const burger=document.getElementById('burger');
   const navlinks=document.getElementById('navlinks');
-  burger.addEventListener('click',()=>navlinks.classList.toggle('open'));
-  navlinks.querySelectorAll('a').forEach(a=>a.addEventListener('click',()=>navlinks.classList.remove('open')));
+  function setMenu(open){
+    const next=Boolean(open)&&mobileQuery.matches;
+    document.documentElement.classList.toggle('menu-open',next);
+    document.body.classList.toggle('menu-open',next);
+    navlinks.classList.toggle('open',next);
+    burger.setAttribute('aria-expanded',String(next));
+    burger.setAttribute('aria-label',next?'Закрыть меню':'Меню');
+  }
+  burger.addEventListener('click',()=>setMenu(!document.body.classList.contains('menu-open')));
+  navlinks.querySelectorAll('a').forEach(a=>a.addEventListener('click',()=>setMenu(false)));
+  document.addEventListener('keydown',e=>{
+    if(e.key==='Escape'&&document.body.classList.contains('menu-open'))setMenu(false);
+  });
 
   /* Бегущая строка */
   const MQ='<span>0.0% алкоголя</span><span class="o">•</span><span>Настоящий сидровый вкус</span><span class="o">•</span><span>ГОСТ</span><span class="o">•</span><span>White Phoenix</span><span class="o">•</span><span>Сделано в России</span><span class="o">•</span>';
@@ -88,7 +100,7 @@ document.addEventListener('DOMContentLoaded',()=>{
   /* Прогресс героя + зоны плашек */
   const hero=document.getElementById('hero');
   const panels=[...document.querySelectorAll('.panel')];
-  let activePanel=-1;
+  let activePanel=null;
   const cue=document.getElementById('cue');
   let target=0, current=0;
   const paras=[...document.querySelectorAll('[data-para]')];
@@ -102,7 +114,7 @@ document.addEventListener('DOMContentLoaded',()=>{
 
   function renderCanvas(){
     canvasRAF=0;
-    const smooth = reduced ? 1 : 0.16;
+    const smooth = reduced || target>=FRAMES.length-1 ? 1 : 0.16;
     current += (target-current)*smooth;
     if(Math.abs(target-current)<0.03)current=target;
     drawFrame(current);
@@ -132,16 +144,19 @@ document.addEventListener('DOMContentLoaded',()=>{
     const y=window.scrollY;
     const vh=window.innerHeight;
     const p=Math.min(1,Math.max(0,(y-metrics.heroTop)/metrics.heroRange));
-    target=p*(FRAMES.length-1);
+    const videoProgress=Math.min(1,Math.max(0,p/0.5));
+    target=videoProgress*(FRAMES.length-1);
     queueCanvas();
-    cue.classList.toggle('hide',p>0.04);
-    const panelIndex=Math.min(panels.length-1,Math.floor(p*panels.length));
+    cue.classList.toggle('hide',p>0.02);
+    const panelProgress=Math.min(1,Math.max(0,(p-0.5)/0.5));
+    const panelZone=Math.floor(panelProgress*panels.length+1e-7);
+    const panelIndex=p<0.5?-1:Math.min(panels.length-1,panelZone);
     if(panelIndex!==activePanel){
       panels.forEach((pl,i)=>{
-        const isActive=i===panelIndex;
-        pl.classList.toggle('on',isActive);
-        pl.classList.toggle('past',i<panelIndex);
-        pl.classList.toggle('future',i>panelIndex);
+        const isActive=panelIndex>=0&&i===panelIndex;
+        pl.classList.toggle('is-active',isActive);
+        pl.classList.toggle('is-past',panelIndex>=0&&i<panelIndex);
+        pl.classList.toggle('is-next',panelIndex<0||i>panelIndex);
         pl.setAttribute('aria-hidden',String(!isActive));
       });
       activePanel=panelIndex;
@@ -282,7 +297,10 @@ document.addEventListener('DOMContentLoaded',()=>{
     });
   }
 
-  window.addEventListener('resize',()=>{queueMeasure();updateOzonSlide();},{passive:true});
+  window.addEventListener('resize',()=>{
+    if(!mobileQuery.matches)setMenu(false);
+    queueMeasure();updateOzonSlide();
+  },{passive:true});
   window.addEventListener('load',queueMeasure,{once:true});
   if(document.fonts?.ready)document.fonts.ready.then(queueMeasure);
   queueMeasure();

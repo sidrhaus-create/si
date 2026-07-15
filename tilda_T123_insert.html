@@ -5,7 +5,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800;900&family=Caveat:wght@600;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="https://sidrhaus-create.github.io/si/zerocider.css?v=300">
+<link rel="stylesheet" href="https://sidrhaus-create.github.io/si/zerocider.css?v=400">
 <div id="progress"></div>
 <div id="glow"></div>
 
@@ -21,7 +21,7 @@
 
 <nav id="nav">
   <a class="logo" href="#hero" aria-label="ZER° CIDER"><img src="https://sidrhaus-create.github.io/si/assets/zerocider_logo.svg" width="374" height="112" loading="eager" fetchpriority="high" decoding="async" alt="ZER° CIDER"></a>
-  <button id="burger" aria-label="Меню"><span></span><span></span><span></span></button>
+  <button id="burger" type="button" aria-label="Меню" aria-controls="navlinks" aria-expanded="false"><span></span><span></span><span></span></button>
   <div id="navlinks">
     <a href="#chto-eto">Что это</a>
     <a href="#vkusy">Вкусы</a>
@@ -40,20 +40,20 @@
       <img src="https://sidrhaus-create.github.io/si/assets/round-logo.svg" width="159" height="159" loading="eager" fetchpriority="high" decoding="async" alt="">
     </div>
 
-    <div class="panel on" data-zone="0" aria-hidden="false">
+    <div class="panel is-next" data-zone="0" aria-hidden="true">
       <span class="tag">Безалкогольный напиток · 0.0%</span>
       <h1>ZER° CIDER</h1>
       <span class="script">Свобода наслаждаться</span>
       <p>Первый российский безалкогольный сидр от сидродельни White&nbsp;Phoenix. Настоящий вкус — без единого градуса.</p>
     </div>
 
-    <div class="panel future" data-zone="1" aria-hidden="true">
+    <div class="panel is-next" data-zone="1" aria-hidden="true">
       <span class="tag">ГОСТ</span>
       <h2>Ни капли алкоголя</h2>
       <p>Полный цикл сидроделия: живое брожение, остановленное холодом на 0,5% и бережно доведённое до 0,0%. Вкус и характер сидра — полностью сохранены.</p>
     </div>
 
-    <div class="panel future" data-zone="2" aria-hidden="true">
+    <div class="panel is-next" data-zone="2" aria-hidden="true">
       <span class="tag">Три характера</span>
       <h2>Выбери свой вкус</h2>
       <div class="chips">
@@ -633,4 +633,4 @@
 
 <button id="backtotop" type="button" aria-label="Наверх"><span aria-hidden="true">↑</span></button>
 
-<script src="https://sidrhaus-create.github.io/si/zerocider.js?v=300"></script>
+<script src="https://sidrhaus-create.github.io/si/zerocider.js?v=400"></script>

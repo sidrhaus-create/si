@@ -36,6 +36,7 @@ body{
   overflow-x:hidden;line-height:1.55;
   -webkit-font-smoothing:antialiased;overscroll-behavior-y:contain;
 }
+html.menu-open,body.menu-open{overflow:hidden;overscroll-behavior:none;touch-action:none}
 ::selection{background:var(--purple);color:var(--white)}
 img,svg{display:block;max-width:100%}
 a{color:inherit;text-decoration:none}
@@ -67,10 +68,11 @@ a{color:inherit;text-decoration:none}
 #navlinks a:hover,#navlinks a.act{opacity:1}
 #navlinks a:hover:after,#navlinks a.act:after{width:100%}
 #burger{display:none;background:none;border:0;cursor:pointer;z-index:95;padding:8px}
-#burger span{display:block;width:26px;height:2px;background:var(--white);margin:6px 0;transition:.3s}
+#burger span{display:block;width:26px;height:2px;background:var(--white);margin:6px 0;
+  transform-origin:center;transition:transform .3s ease,opacity .25s ease,background .25s ease}
 
 /* ============ HERO ============ */
-#hero{height:260vh;height:260svh;position:relative;touch-action:pan-y}
+#hero{height:600vh;height:600svh;position:relative;touch-action:pan-y}
 .stage{position:sticky;top:0;height:100vh;height:100svh;overflow:hidden;
   background:
     radial-gradient(115% 88% at 50% 22%, #774282 0%, #6B3077 34%, #3B1943 76%, #241028 100%),
@@ -100,7 +102,7 @@ a{color:inherit;text-decoration:none}
 
 /* Плашки героя — плотные, читабельные */
 .panel{position:absolute;z-index:6;left:50%;bottom:calc(30px + env(safe-area-inset-bottom));
-  transform:translate(-50%,26px) scale(.97);
+  transform:translate3d(-56%,26px,0) scale(.97);
   width:min(560px, calc(100% - 28px));
   background:var(--plate);
   border:1px solid var(--stroke);border-radius:var(--r);
@@ -109,11 +111,14 @@ a{color:inherit;text-decoration:none}
   box-shadow:0 24px 60px rgba(36,16,40,.55),
              inset 0 1px 0 rgba(255,255,255,.08),
              0 0 0 1px rgba(107,48,119,.4);
-  opacity:0;pointer-events:none;will-change:transform,opacity;
+  opacity:0;pointer-events:none;
   transition:opacity .5s ease,transform .5s ease}
-.panel.on{opacity:1;pointer-events:auto;transform:translate(-50%,0) scale(1)}
-.panel.past{opacity:0;pointer-events:none;transform:translate3d(calc(-50% + 105vw),0,0) scale(.96)}
-.panel.future{opacity:0;pointer-events:none;transform:translate(-50%,26px) scale(.97)}
+.panel.is-active{opacity:1;pointer-events:auto;will-change:transform,opacity;
+  transform:translate3d(-50%,0,0) scale(1)}
+.panel.is-past{opacity:0;pointer-events:none;
+  transform:translate3d(calc(-50% + 105vw),0,0) scale(.96)}
+.panel.is-next{opacity:0;pointer-events:none;
+  transform:translate3d(-56%,26px,0) scale(.97)}
 .panel h1{font-family:var(--f-head);font-weight:800;font-size:clamp(30px,7.4vw,52px);line-height:1.04;letter-spacing:.01em}
 .panel h2{font-family:var(--f-head);font-weight:800;font-size:clamp(23px,5.6vw,36px);line-height:1.12}
 .panel .script{font-family:var(--f-script);font-size:clamp(24px,5.4vw,34px);color:var(--lilac);line-height:1.1;margin-top:8px;display:block}
@@ -383,16 +388,26 @@ footer li a:hover{opacity:1;text-decoration:underline}
 
 /* ============ МОБИЛЬНАЯ ВЕРСИЯ ============ */
 @media(max-width:900px){
-  #burger{display:block}
-  #navlinks{position:fixed;inset:0;background:rgba(36,16,40,.97);backdrop-filter:blur(18px);
-    flex-direction:column;justify-content:center;gap:30px;
-    opacity:0;pointer-events:none;transition:opacity .35s}
-  #navlinks.open{opacity:1;pointer-events:auto}
-  #navlinks a{font-size:19px}
+  #nav{z-index:10000}
+  #nav .logo{position:relative;z-index:10001}
+  #burger{display:block;position:relative;z-index:10001}
+  #burger[aria-expanded="true"] span:nth-child(1){transform:translate3d(0,8px,0) rotate(45deg)}
+  #burger[aria-expanded="true"] span:nth-child(2){opacity:0}
+  #burger[aria-expanded="true"] span:nth-child(3){transform:translate3d(0,-8px,0) rotate(-45deg)}
+  #navlinks{position:fixed;inset:0;width:100%;height:100vh;height:100dvh;min-height:100svh;
+    z-index:9999;overflow:hidden;padding:clamp(90px,14vh,132px) 24px 40px;
+    background:radial-gradient(90% 70% at 50% 0%,rgba(119,66,130,.96),rgba(36,16,40,.99) 72%);
+    backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);
+    flex-direction:column;align-items:center;justify-content:center;gap:30px;
+    opacity:0;visibility:hidden;pointer-events:none;transform:translate3d(0,-12px,0);
+    transition:opacity .35s ease,transform .35s ease,visibility 0s linear .35s}
+  #navlinks.open{opacity:1;visibility:visible;pointer-events:auto;transform:translate3d(0,0,0);transition-delay:0s}
+  #navlinks a{font-size:clamp(20px,5.5vw,28px);text-align:center;padding:9px 4px}
+  body.menu-open #nav{background:transparent;box-shadow:none;backdrop-filter:none;-webkit-backdrop-filter:none}
+  body.menu-open #backtotop{opacity:0;pointer-events:none}
   .flavor{grid-template-columns:1fr;gap:22px}
   .flavor.alt .txt{order:1}.flavor.alt .art{order:2}
   .flavor .num{font-size:clamp(88px,24vw,150px)}
-  #hero{height:240vh;height:240svh}
   .bottles.in .bottle-slot img{animation:none}
   .ozon-card{flex-basis:calc((100% - 18px)/2)}
   .fgrid{grid-template-columns:1fr 1fr}
@@ -400,7 +415,6 @@ footer li a:hover{opacity:1;text-decoration:underline}
 @media(max-width:520px){
   #nav .logo svg,#nav .logo img{height:41px}
   #nav.solid .logo svg,#nav.solid .logo img{height:35px}
-  #hero{height:240vh;height:240svh}
   .panel{padding:19px 18px 20px}
   #badge{top:calc(60px + env(safe-area-inset-top));right:14px}
   .feats{grid-template-columns:1fr 1fr;gap:10px}
@@ -441,8 +455,8 @@ footer li a:hover{opacity:1;text-decoration:underline}
   .phoenix-flight img{opacity:1;transform:translateX(42px) rotate(0)}
   .phoenix-trail{display:none}
   .panel{transition:none}
-  .panel.on{opacity:1;transform:translate(-50%,0) scale(1)}
-  .panel.past{opacity:0;transform:translate3d(calc(-50% + 105vw),0,0) scale(.96)}
-  .panel.future{opacity:0;transform:translate(-50%,26px) scale(.97)}
+  .panel.is-active{opacity:1;transform:translate3d(-50%,0,0) scale(1)}
+  .panel.is-past{opacity:0;transform:translate3d(calc(-50% + 105vw),0,0) scale(.96)}
+  .panel.is-next{opacity:0;transform:translate3d(-56%,26px,0) scale(.97)}
   .ozon-track{scroll-behavior:auto}
 }
