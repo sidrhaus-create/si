@@ -10,12 +10,12 @@
   --purple-2:#7A3A88;      /* небольшое подсветление */
   --purple-hi:#8B4A9C;     /* пиковая точка градиента */
   --purple-deep:#3B1943;
-  --purple-ink:#28102F;
-  --void:#1A0820;
+  --purple-ink:#2C1332;
+  --void:#241028;
   --lilac:#C899D4;
   --lilac-soft:#E9DCEE;
   --white:#FFFFFF;
-  --black:#000000;
+  --black:#241028;
 
   --f-head:'Cera Pro','Montserrat',system-ui,sans-serif;
   --f-caps:'Sauna-SmallCaps','Cera Pro','Montserrat',sans-serif;
@@ -29,12 +29,12 @@
   --stroke-hi:rgba(255,255,255,.5);
 }
 *{margin:0;padding:0;box-sizing:border-box}
-html{scroll-behavior:smooth}
+html{scroll-behavior:smooth;overscroll-behavior-y:contain}
 body{
   font-family:var(--f-body);font-weight:500;
-  background:var(--void);color:var(--white);
+  background:linear-gradient(180deg,#241028 0%,#3B1943 48%,#241028 100%);color:var(--white);
   overflow-x:hidden;line-height:1.55;
-  -webkit-font-smoothing:antialiased;
+  -webkit-font-smoothing:antialiased;overscroll-behavior-y:contain;
 }
 ::selection{background:var(--purple);color:var(--white)}
 img,svg{display:block;max-width:100%}
@@ -69,16 +69,16 @@ a{color:inherit;text-decoration:none}
 #burger span{display:block;width:26px;height:2px;background:var(--white);margin:6px 0;transition:.3s}
 
 /* ============ HERO ============ */
-#hero{height:420vh;position:relative}
+#hero{height:360vh;position:relative;touch-action:pan-y}
 .stage{position:sticky;top:0;height:100vh;height:100svh;overflow:hidden;
   background:
-    radial-gradient(120% 90% at 50% 24%, var(--purple) 0%, var(--purple-deep) 42%, var(--void) 80%),
-    var(--void)}
-#scrub,#scrubvid{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+    radial-gradient(115% 88% at 50% 22%, #7A3A88 0%, #6B3077 34%, #2C1332 76%, #241028 100%),
+    #241028;touch-action:pan-y}
+#scrub,#scrubvid{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;touch-action:pan-y}
 #scrubvid{opacity:0;pointer-events:none;position:absolute;width:1px;height:1px;top:-9999px}
 .stage:after{content:'';position:absolute;inset:0;pointer-events:none;
   background:
-    linear-gradient(180deg, rgba(40,16,47,.5) 0%, transparent 24%, transparent 48%, rgba(26,8,32,.92) 100%),
+    linear-gradient(180deg, rgba(44,19,50,.42) 0%, transparent 24%, transparent 48%, rgba(36,16,40,.9) 100%),
     radial-gradient(80% 60% at 50% 50%, transparent 55%, rgba(107,48,119,.22) 100%)}
 #embers{position:absolute;inset:0;overflow:hidden;pointer-events:none;z-index:2}
 .ember{position:absolute;bottom:-14px;border-radius:50%;background:var(--lilac);opacity:0;
@@ -161,7 +161,7 @@ section.blk{position:relative;padding:clamp(66px,11vw,130px) clamp(18px,5vw,64px
 #chto-eto{background:
   radial-gradient(80% 60% at 20% 10%, rgba(107,48,119,.55), transparent 60%),
   radial-gradient(70% 60% at 90% 90%, rgba(107,48,119,.4), transparent 60%),
-  linear-gradient(180deg, var(--void) 0%, var(--purple-ink) 60%, var(--purple-deep) 100%)}
+  linear-gradient(180deg, #241028 0%, #2C1332 48%, #3B1943 100%)}
 .feats{display:grid;grid-template-columns:repeat(auto-fit,minmax(235px,1fr));gap:14px;margin-top:clamp(28px,5vw,52px)}
 .feat{background:var(--plate);border:1px solid var(--stroke);border-radius:var(--r);
   padding:24px 22px;position:relative;overflow:hidden;transition:transform .35s,border-color .35s,box-shadow .35s}
@@ -192,7 +192,7 @@ section.blk{position:relative;padding:clamp(66px,11vw,130px) clamp(18px,5vw,64px
 #vkusy{background:
   radial-gradient(90% 40% at 100% 0%, rgba(107,48,119,.45), transparent 55%),
   radial-gradient(90% 40% at 0% 100%, rgba(107,48,119,.35), transparent 55%),
-  var(--void)}
+  #241028}
 .flavor{display:grid;grid-template-columns:1.05fr .95fr;gap:clamp(22px,5vw,64px);align-items:center;
   padding:clamp(40px,7vw,84px) 0;position:relative}
 .flavor+.flavor{border-top:1px solid rgba(255,255,255,.1)}
@@ -228,7 +228,7 @@ section.blk{position:relative;padding:clamp(66px,11vw,130px) clamp(18px,5vw,64px
 #kak-eto{background:
   radial-gradient(80% 50% at 30% 20%, rgba(139,74,156,.5), transparent 60%),
   radial-gradient(80% 50% at 70% 80%, rgba(139,74,156,.4), transparent 60%),
-  linear-gradient(180deg, var(--purple-deep) -10%, var(--purple) 40%, var(--purple-2) 70%, var(--purple-deep) 100%)}
+  linear-gradient(180deg, #3B1943 -10%, #5D2F6A 40%, #6B3077 70%, #3B1943 100%)}
 #kak-eto .kicker{color:var(--lilac-soft)}
 #kak-eto .h-split{text-shadow:0 4px 24px rgba(0,0,0,.35)}
 .pipe{position:relative;margin-top:clamp(34px,6vw,64px);--padx:26px}
@@ -285,17 +285,41 @@ section.blk{position:relative;padding:clamp(66px,11vw,130px) clamp(18px,5vw,64px
 
 /* ============ ГДЕ КУПИТЬ ============ */
 #gde-kupit{background:
-  radial-gradient(70% 60% at 100% 100%, rgba(107,48,119,.5), transparent 60%),
-  radial-gradient(60% 50% at 0% 0%, rgba(107,48,119,.3), transparent 60%),
-  var(--void)}
-.markets{display:grid;grid-template-columns:repeat(auto-fit,minmax(215px,1fr));gap:14px;margin-top:clamp(28px,5vw,50px)}
-.mk{background:var(--plate);border:1px solid var(--stroke);border-radius:var(--r);padding:26px 22px;
-  display:flex;flex-direction:column;gap:8px;min-height:150px;position:relative;overflow:hidden;
-  transition:transform .35s,border-color .35s,box-shadow .35s}
-.mk:hover{transform:translateY(-6px);border-color:var(--stroke-hi);box-shadow:0 20px 50px rgba(107,48,119,.45)}
-.mk .nm{font-family:var(--f-head);font-weight:800;font-size:21px}
-.mk p{font-size:13.5px;color:var(--lilac-soft)}
-.mk .go{margin-top:auto;font-family:var(--f-caps);text-transform:uppercase;letter-spacing:.2em;font-size:11px;color:var(--lilac)}
+  radial-gradient(75% 62% at 100% 100%, rgba(139,74,156,.46), transparent 62%),
+  radial-gradient(68% 54% at 0% 0%, rgba(93,47,106,.5), transparent 62%),
+  linear-gradient(180deg,#241028 0%,#3B1943 62%,#241028 100%)}
+.buy-bottles{position:relative;isolation:isolate;width:min(920px,100%);min-height:clamp(430px,55vw,650px);
+  margin:clamp(28px,4vw,48px) auto clamp(36px,6vw,70px)}
+.buy-bottles:before{content:'';position:absolute;z-index:0;left:50%;bottom:2%;width:min(760px,92%);height:42%;
+  transform:translateX(-50%);border-radius:50%;filter:blur(16px);
+  background:radial-gradient(ellipse,rgba(139,74,156,.62) 0%,rgba(107,48,119,.34) 42%,transparent 72%)}
+.buy-bottle{position:absolute;bottom:0;left:50%;width:auto;object-fit:contain;transform-origin:50% 100%;
+  filter:drop-shadow(0 34px 34px rgba(36,16,40,.7)) drop-shadow(0 0 34px rgba(139,74,156,.28))}
+.buy-bottle-left,.buy-bottle-right{z-index:1;height:clamp(350px,46vw,540px);opacity:.96}
+.buy-bottle-left{transform:translateX(-100%) translateY(18px) rotate(-9deg)}
+.buy-bottle-right{transform:translateX(0) translateY(18px) rotate(9deg)}
+.buy-bottle-center{z-index:3;height:clamp(410px,54vw,630px);transform:translateX(-50%)}
+.ozon-head{margin-bottom:22px}
+.ozon-eyebrow{display:block;font-family:var(--f-caps);text-transform:uppercase;letter-spacing:.25em;
+  font-size:11px;color:var(--lilac);margin-bottom:8px}
+.ozon-head h3{font-family:var(--f-head);font-size:clamp(25px,4vw,38px);line-height:1.1}
+.ozon-products{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px;align-items:stretch}
+.ozon-card{display:flex;flex-direction:column;min-width:0;padding:16px;border-radius:24px;
+  color:#241028;background:linear-gradient(155deg,#fff 0%,#f6eff8 100%);
+  box-shadow:0 24px 54px rgba(36,16,40,.38);border:1px solid rgba(255,255,255,.7)}
+.ozon-card-media{display:grid;place-items:center;min-height:310px;border-radius:17px;overflow:hidden;
+  background:radial-gradient(circle at 50% 28%,#fff 0%,#f5edf7 58%,#eadced 100%)}
+.ozon-card-media img{width:auto;height:300px;max-width:100%;object-fit:contain;
+  filter:drop-shadow(0 18px 20px rgba(59,25,67,.24))}
+.ozon-badges{display:flex;flex-wrap:wrap;gap:6px;margin:16px 0 12px}
+.ozon-badges span{padding:6px 9px;border-radius:999px;background:#ead9ee;color:#5D2F6A;
+  font-size:10.5px;font-weight:800;line-height:1;white-space:nowrap}
+.ozon-card h3{font-family:var(--f-head);font-size:22px;line-height:1.15;margin-bottom:9px}
+.ozon-card p{font-size:13.5px;line-height:1.5;color:#5a4560;margin-bottom:18px}
+.ozon-btn{display:block;margin-top:auto;padding:13px 16px;border-radius:13px;text-align:center;
+  background:#005BFF;color:#fff;font-family:var(--f-head);font-weight:800;font-size:14px;
+  box-shadow:0 11px 24px rgba(0,91,255,.24);transition:background .25s,transform .25s,box-shadow .25s}
+.ozon-btn:hover{background:#0049d8;transform:translateY(-2px);box-shadow:0 15px 30px rgba(0,91,255,.3)}
 .cta{margin-top:clamp(36px,6vw,60px);text-align:center;
   background:linear-gradient(135deg, var(--purple-hi) 0%, var(--purple) 55%, var(--purple-deep) 100%);
   border:1px solid var(--stroke-hi);border-radius:28px;padding:clamp(36px,6vw,64px) 22px;position:relative;overflow:hidden;
@@ -322,7 +346,7 @@ section.blk{position:relative;padding:clamp(66px,11vw,130px) clamp(18px,5vw,64px
 #fab.show{opacity:1;transform:none}
 
 /* ============ ФУТЕР ============ */
-footer{background:linear-gradient(180deg, var(--void) 0%, var(--black) 100%);
+footer{background:linear-gradient(180deg,#241028 0%,#3B1943 100%);
   padding:clamp(44px,7vw,76px) clamp(18px,5vw,64px) calc(30px + env(safe-area-inset-bottom));
   border-top:1px solid rgba(107,48,119,.4)}
 .fgrid{max-width:1160px;margin:0 auto;display:grid;grid-template-columns:1.4fr 1fr 1fr;gap:34px}
@@ -348,13 +372,15 @@ footer li a:hover{opacity:1;text-decoration:underline}
   .flavor{grid-template-columns:1fr;gap:22px}
   .flavor.alt .txt{order:1}.flavor.alt .art{order:2}
   .flavor .num{font-size:clamp(88px,24vw,150px)}
+  #hero{height:300vh}
+  .ozon-products{grid-template-columns:repeat(2,minmax(0,1fr))}
   .fgrid{grid-template-columns:1fr 1fr}
   #fab{display:flex}
 }
 @media(max-width:520px){
   #nav .logo svg,#nav .logo img{height:32px}
   #nav.solid .logo svg,#nav.solid .logo img{height:27px}
-  #hero{height:380vh}
+  #hero{height:300vh}
   .panel{padding:19px 18px 20px}
   #badge{top:calc(60px + env(safe-area-inset-top));right:14px}
   .feats{grid-template-columns:1fr 1fr;gap:10px}
@@ -364,6 +390,18 @@ footer li a:hover{opacity:1;text-decoration:underline}
   .feat .n{width:29px;height:29px;font-size:13px;margin-bottom:10px}
   .bottles img{height:clamp(200px,54vw,280px)}
   .bottles.in img:nth-child(2){height:clamp(218px,60vw,300px)}
+  .buy-bottles{min-height:clamp(350px,116vw,470px);margin-top:22px}
+  .buy-bottle-left,.buy-bottle-right{height:clamp(275px,88vw,370px)}
+  .buy-bottle-left{transform:translateX(-84%) translateY(16px) rotate(-8deg)}
+  .buy-bottle-right{transform:translateX(-16%) translateY(16px) rotate(8deg)}
+  .buy-bottle-center{height:clamp(335px,108vw,455px)}
+  .ozon-products{display:flex;gap:14px;overflow-x:auto;overscroll-behavior-inline:contain;
+    scroll-snap-type:x mandatory;scroll-padding-inline:2px;padding:2px 2px 18px;
+    scrollbar-width:none;-webkit-overflow-scrolling:touch;touch-action:pan-x pan-y}
+  .ozon-products::-webkit-scrollbar{display:none}
+  .ozon-card{flex:0 0 min(84vw, 330px);scroll-snap-align:start;scroll-snap-stop:always}
+  .ozon-card-media{min-height:284px}
+  .ozon-card-media img{height:274px}
   .pipe{--padx:19px}
   .step{padding-left:calc(var(--padx) + 33px);padding-bottom:44px}
   .step .dot{width:36px;height:36px;font-size:12.5px}
@@ -376,5 +414,6 @@ footer li a:hover{opacity:1;text-decoration:underline}
   .draw [data-line],.draw .hatch{stroke-dasharray:none;stroke-dashoffset:0;opacity:1}
   .step h3,.step p{opacity:1;transform:none}
   .bottles img{opacity:1;transform:none}
+  .buy-bottles,.ozon-card{opacity:1;transform:none}
   .panel{opacity:1}
 }

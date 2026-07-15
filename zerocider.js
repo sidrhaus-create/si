@@ -36,17 +36,33 @@ document.addEventListener('DOMContentLoaded',()=>{
   const FRAMES = ["https://sidrhaus-create.github.io/si/assets/zerocider_asset_04_3cc9473f5b.webp","https://sidrhaus-create.github.io/si/assets/zerocider_asset_05_110b95d500.webp","https://sidrhaus-create.github.io/si/assets/zerocider_asset_06_0042483a6d.webp","https://sidrhaus-create.github.io/si/assets/zerocider_asset_07_7d883bb8d9.webp","https://sidrhaus-create.github.io/si/assets/zerocider_asset_08_74113ad742.webp","https://sidrhaus-create.github.io/si/assets/zerocider_asset_09_b8fe38f754.webp","https://sidrhaus-create.github.io/si/assets/zerocider_asset_10_316c70033b.webp","https://sidrhaus-create.github.io/si/assets/zerocider_asset_11_29124efd7d.webp","https://sidrhaus-create.github.io/si/assets/zerocider_asset_12_dacd47fe05.webp","https://sidrhaus-create.github.io/si/assets/zerocider_asset_13_a85cd989fa.webp","https://sidrhaus-create.github.io/si/assets/zerocider_asset_14_a6b37278fe.webp","https://sidrhaus-create.github.io/si/assets/zerocider_asset_15_13a2cd2bd3.webp","https://sidrhaus-create.github.io/si/assets/zerocider_asset_16_8e95e9431e.webp","https://sidrhaus-create.github.io/si/assets/zerocider_asset_17_82c1fd5af2.webp","https://sidrhaus-create.github.io/si/assets/zerocider_asset_18_7f91864136.webp","https://sidrhaus-create.github.io/si/assets/zerocider_asset_19_3da363a942.webp","https://sidrhaus-create.github.io/si/assets/zerocider_asset_20_2e467b653c.webp","https://sidrhaus-create.github.io/si/assets/zerocider_asset_21_0857dc7afd.webp","https://sidrhaus-create.github.io/si/assets/zerocider_asset_22_a5f134ace7.webp","https://sidrhaus-create.github.io/si/assets/zerocider_asset_23_46e5e44eb2.webp","https://sidrhaus-create.github.io/si/assets/zerocider_asset_24_9970f2717c.webp","https://sidrhaus-create.github.io/si/assets/zerocider_asset_25_918a64e7fe.webp","https://sidrhaus-create.github.io/si/assets/zerocider_asset_26_283b29d32d.webp","https://sidrhaus-create.github.io/si/assets/zerocider_asset_27_d6b109955a.webp","https://sidrhaus-create.github.io/si/assets/zerocider_asset_28_1f98f3be77.webp","https://sidrhaus-create.github.io/si/assets/zerocider_asset_29_e14c4dcfff.webp","https://sidrhaus-create.github.io/si/assets/zerocider_asset_30_59f773ef2d.webp","https://sidrhaus-create.github.io/si/assets/zerocider_asset_31_97b4d35409.webp","https://sidrhaus-create.github.io/si/assets/zerocider_asset_32_258a1b6b3f.webp","https://sidrhaus-create.github.io/si/assets/zerocider_asset_33_9944ff48c8.webp","https://sidrhaus-create.github.io/si/assets/zerocider_asset_34_0131310e38.webp","https://sidrhaus-create.github.io/si/assets/zerocider_asset_35_ada020edac.webp","https://sidrhaus-create.github.io/si/assets/zerocider_asset_36_c52f45b74c.webp","https://sidrhaus-create.github.io/si/assets/zerocider_asset_37_c6911efaa7.webp","https://sidrhaus-create.github.io/si/assets/zerocider_asset_38_37eeee3c6d.webp","https://sidrhaus-create.github.io/si/assets/zerocider_asset_39_b7b99c04f1.webp","https://sidrhaus-create.github.io/si/assets/zerocider_asset_40_d43dd9ba55.webp","https://sidrhaus-create.github.io/si/assets/zerocider_asset_41_4fc4190631.webp","https://sidrhaus-create.github.io/si/assets/zerocider_asset_42_20f04c766c.webp","https://sidrhaus-create.github.io/si/assets/zerocider_asset_43_0a5cfb9fb6.webp","https://sidrhaus-create.github.io/si/assets/zerocider_asset_44_6fdac8774f.webp","https://sidrhaus-create.github.io/si/assets/zerocider_asset_45_97c7008e46.webp","https://sidrhaus-create.github.io/si/assets/zerocider_asset_46_42061d4026.webp","https://sidrhaus-create.github.io/si/assets/zerocider_asset_47_c7fed475b5.webp","https://sidrhaus-create.github.io/si/assets/zerocider_asset_48_031d8ff843.webp","https://sidrhaus-create.github.io/si/assets/zerocider_asset_49_4d716a4f63.webp","https://sidrhaus-create.github.io/si/assets/zerocider_asset_50_e068148b50.webp","https://sidrhaus-create.github.io/si/assets/zerocider_asset_51_86a0038d0e.webp","https://sidrhaus-create.github.io/si/assets/zerocider_asset_52_0dabf6b71f.webp"];
   const canvas=document.getElementById('scrub');
   const ctx=canvas.getContext('2d',{alpha:false});
-  const imgs = FRAMES.map(src=>{const im=new Image(); im.decoding='async'; im.src=src; return im;});
+  const imgs=new Array(FRAMES.length);
   let cw=0, ch=0;
 
-  function resize(){
+  function loadFrame(i,priority='auto'){
+    if(imgs[i])return imgs[i];
+    const im=new Image();
+    im.decoding='async';
+    im.fetchPriority=priority;
+    im.onload=queueCanvas;
+    im.src=FRAMES[i];
+    imgs[i]=im;
+    return im;
+  }
+  loadFrame(0,'high');
+  loadFrame(1,'high');
+  const preloadFrames=()=>FRAMES.forEach((_,i)=>loadFrame(i,i<4?'high':'low'));
+  if('requestIdleCallback' in window)requestIdleCallback(preloadFrames,{timeout:1800});
+  else setTimeout(preloadFrames,450);
+
+  function resizeCanvas(){
     const dpr=Math.min(devicePixelRatio||1, 2);
     cw=canvas.clientWidth; ch=canvas.clientHeight;
     canvas.width=cw*dpr; canvas.height=ch*dpr;
     ctx.setTransform(dpr,0,0,dpr,0,0);
+    ctx.fillStyle='#2C1332';
+    ctx.fillRect(0,0,cw,ch);
   }
-  resize();
-  window.addEventListener('resize',resize);
 
   function drawImg(im){
     if(!im || !im.complete || !im.naturalWidth) return;
@@ -57,74 +73,91 @@ document.addEventListener('DOMContentLoaded',()=>{
   }
   function drawFrame(f){
     const i=Math.max(0, Math.min(FRAMES.length-1, Math.round(f)));
-    drawImg(imgs[i]);
+    let im=loadFrame(i,i<4?'high':'auto');
+    if(!im.complete || !im.naturalWidth){
+      for(let d=1;d<FRAMES.length;d++){
+        const near=imgs[i-d]||imgs[i+d];
+        if(near?.complete && near.naturalWidth){im=near;break;}
+      }
+    }
+    drawImg(im);
   }
-  imgs[0].onload = ()=> drawFrame(0);
 
   /* Прогресс героя + зоны плашек */
   const hero=document.getElementById('hero');
   const panels=[...document.querySelectorAll('.panel')];
   const cue=document.getElementById('cue');
   let target=0, current=0;
-
-  function heroProgress(){
-    const r=hero.getBoundingClientRect();
-    const total=hero.offsetHeight-window.innerHeight;
-    return Math.min(1,Math.max(0,-r.top/total));
-  }
-  function updateHero(){
-    const p=heroProgress();
-    target = p*(FRAMES.length-1);
-    cue.classList.toggle('hide', p>0.04);
-    const zones=panels.length;
-    panels.forEach((pl,i)=>{
-      const a=i/zones, b=(i+1)/zones;
-      pl.classList.toggle('on', p>=a-0.02 && p<b-0.06);
-    });
-  }
-
   const paras=[...document.querySelectorAll('[data-para]')];
   const fab=document.getElementById('fab');
   const gde=document.getElementById('gde-kupit');
+  const pipe=document.getElementById('pipe');
+  const spineFill=document.getElementById('spinefill');
+  const progress=document.getElementById('progress');
+  const metrics={heroTop:0,heroHeight:0,heroRange:1,gdeTop:0,pipeTop:0,pipeHeight:1,pageRange:1};
+  const paraMetrics=paras.map(el=>({el,center:0,amt:parseFloat(el.dataset.para)||0.1}));
+  let canvasRAF=0,scrollRAF=0,measureRAF=0;
 
-  function loop(){
-    /* Плавное следование за скроллом */
+  function renderCanvas(){
+    canvasRAF=0;
     const smooth = reduced ? 1 : 0.16;
     current += (target-current)*smooth;
+    if(Math.abs(target-current)<0.03)current=target;
     drawFrame(current);
-
-    /* Прогресс */
-    const sc=document.documentElement;
-    const pr=sc.scrollTop/(sc.scrollHeight-sc.clientHeight);
-    document.getElementById('progress').style.width=(pr*100)+'%';
-
-    /* Параллакс */
-    const vhv=window.innerHeight;
-    paras.forEach(el=>{
-      const r=el.getBoundingClientRect();
-      const c=(r.top+r.height/2 - vhv/2)/vhv;
-      const amt=parseFloat(el.dataset.para)||0.1;
-      el.style.transform='translateY('+(-c*amt*100)+'px)';
-    });
-
-    /* Плавающая CTA */
-    if(fab){
-      const heroDone = hero.getBoundingClientRect().bottom < vhv*0.5;
-      const gdeR = gde.getBoundingClientRect();
-      const nearGde = gdeR.top < vhv*0.9;
-      fab.classList.toggle('show', heroDone && !nearGde);
-    }
-
-    fillSpine();
-    requestAnimationFrame(loop);
+    if(current!==target)canvasRAF=requestAnimationFrame(renderCanvas);
   }
-
+  function queueCanvas(){
+    if(!canvasRAF)canvasRAF=requestAnimationFrame(renderCanvas);
+  }
+  function docTop(el){return scrollY+el.getBoundingClientRect().top;}
+  function measure(){
+    measureRAF=0;
+    resizeCanvas();
+    metrics.heroTop=docTop(hero);
+    metrics.heroHeight=hero.offsetHeight;
+    metrics.heroRange=Math.max(1,metrics.heroHeight-innerHeight);
+    metrics.gdeTop=docTop(gde);
+    metrics.pipeTop=pipe?docTop(pipe):0;
+    metrics.pipeHeight=pipe?Math.max(1,pipe.offsetHeight):1;
+    metrics.pageRange=Math.max(1,document.documentElement.scrollHeight-innerHeight);
+    paraMetrics.forEach(item=>{item.center=docTop(item.el)+item.el.offsetHeight/2;});
+    updateScroll();
+  }
+  function queueMeasure(){
+    if(!measureRAF)measureRAF=requestAnimationFrame(measure);
+  }
+  function updateScroll(){
+    scrollRAF=0;
+    const y=window.scrollY;
+    const vh=window.innerHeight;
+    const p=Math.min(1,Math.max(0,(y-metrics.heroTop)/metrics.heroRange));
+    target=p*(FRAMES.length-1);
+    queueCanvas();
+    cue.classList.toggle('hide',p>0.04);
+    panels.forEach((pl,i)=>{
+      const a=i/panels.length,b=(i+1)/panels.length;
+      pl.classList.toggle('on',p>=a-0.02&&p<b-0.06);
+    });
+    progress.style.width=((y/metrics.pageRange)*100)+'%';
+    nav.classList.toggle('solid',y>30);
+    paraMetrics.forEach(item=>{
+      const c=(item.center-y-vh/2)/vh;
+      item.el.style.transform='translateY('+(-c*item.amt*100)+'px)';
+    });
+    if(fab){
+      const heroDone=y>metrics.heroTop+metrics.heroHeight-vh*0.5;
+      const nearGde=y+vh*0.9>metrics.gdeTop;
+      fab.classList.toggle('show',heroDone&&!nearGde);
+    }
+    if(spineFill){
+      const pipeP=Math.min(1,Math.max(0,(y+vh*0.62-metrics.pipeTop)/(metrics.pipeHeight*0.82)));
+      spineFill.style.height=(pipeP*100)+'%';
+    }
+  }
   function onScroll(){
-    updateHero();
-    nav.classList.toggle('solid', scrollY>30);
+    if(!scrollRAF)scrollRAF=requestAnimationFrame(updateScroll);
   }
   window.addEventListener('scroll',onScroll,{passive:true});
-  onScroll();
 
   /* Сплит-заголовки по буквам */
   document.querySelectorAll('.h-split').forEach(h=>{
@@ -170,17 +203,6 @@ document.addEventListener('DOMContentLoaded',()=>{
     }});},{threshold: mobile? .22 : .35});
   steps.forEach(s=>io3.observe(s));
 
-  /* Заполнение линии производства */
-  const pipe=document.getElementById('pipe');
-  const spineFill=document.getElementById('spinefill');
-  function fillSpine(){
-    if(!pipe)return;
-    const r=pipe.getBoundingClientRect();
-    const vhv=window.innerHeight;
-    const p=Math.min(1,Math.max(0,(vhv*0.62-r.top)/(r.height*0.82)));
-    spineFill.style.height=(p*100)+'%';
-  }
-
   /* Активные пункты меню */
   const secs=['chto-eto','vkusy','kak-eto','gde-kupit'];
   const links=[...navlinks.querySelectorAll('a')];
@@ -194,13 +216,15 @@ document.addEventListener('DOMContentLoaded',()=>{
   /* Тилт карточек с бутылками (десктоп) */
   if(!mobile && !reduced){
     document.querySelectorAll('.tilt').forEach(card=>{
+      let r;
+      card.addEventListener('pointerenter',()=>{r=card.getBoundingClientRect();});
       card.addEventListener('pointermove',e=>{
-        const r=card.getBoundingClientRect();
+        if(!r)r=card.getBoundingClientRect();
         const x=(e.clientX-r.left)/r.width-0.5;
         const y=(e.clientY-r.top)/r.height-0.5;
         card.style.transform='rotateY('+(x*10)+'deg) rotateX('+(-y*8)+'deg)';
       });
-      card.addEventListener('pointerleave',()=>{card.style.transform='';});
+      card.addEventListener('pointerleave',()=>{r=null;card.style.transform='';});
     });
   }
 
@@ -220,5 +244,8 @@ document.addEventListener('DOMContentLoaded',()=>{
     });
   }
 
-  requestAnimationFrame(loop);
+  window.addEventListener('resize',queueMeasure,{passive:true});
+  window.addEventListener('load',queueMeasure,{once:true});
+  if(document.fonts?.ready)document.fonts.ready.then(queueMeasure);
+  queueMeasure();
 });
