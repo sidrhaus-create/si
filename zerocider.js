@@ -8,7 +8,9 @@ document.addEventListener('DOMContentLoaded',()=>{
 
   /* Курсорное свечение */
   const glow=document.getElementById('glow');
-  window.addEventListener('pointermove',e=>{glow.style.left=e.clientX+'px';glow.style.top=e.clientY+'px';},{passive:true});
+  window.addEventListener('pointermove',e=>{
+    glow.style.transform='translate3d('+(e.clientX-210)+'px,'+(e.clientY-210)+'px,0)';
+  },{passive:true});
 
   /* Навбар + бургер */
   const nav=document.getElementById('nav');
@@ -92,6 +94,7 @@ document.addEventListener('DOMContentLoaded',()=>{
   const pipe=document.getElementById('pipe');
   const spineFill=document.getElementById('spinefill');
   const progress=document.getElementById('progress');
+  const backToTop=document.getElementById('backtotop');
   const metrics={heroTop:0,heroHeight:0,heroRange:1,pipeTop:0,pipeHeight:1,pageRange:1};
   const paraMetrics=paras.map(el=>({el,center:0,amt:parseFloat(el.dataset.para)||0.1}));
   let canvasRAF=0,scrollRAF=0,measureRAF=0;
@@ -137,15 +140,16 @@ document.addEventListener('DOMContentLoaded',()=>{
       pl.classList.toggle('on',p>=a-0.02&&(last||p<b-0.02));
       pl.classList.toggle('past',!last&&p>=b-0.02);
     });
-    progress.style.width=((y/metrics.pageRange)*100)+'%';
+    progress.style.transform='scaleX('+Math.min(1,Math.max(0,y/metrics.pageRange))+')';
     nav.classList.toggle('solid',y>30);
+    if(backToTop)backToTop.classList.toggle('show',y>700);
     paraMetrics.forEach(item=>{
       const c=(item.center-y-vh/2)/vh;
       item.el.style.transform='translateY('+(-c*item.amt*100)+'px)';
     });
     if(spineFill){
       const pipeP=Math.min(1,Math.max(0,(y+vh*0.62-metrics.pipeTop)/(metrics.pipeHeight*0.82)));
-      spineFill.style.height=(pipeP*100)+'%';
+      spineFill.style.transform='scaleY('+pipeP+')';
     }
   }
   function onScroll(){
@@ -207,6 +211,56 @@ document.addEventListener('DOMContentLoaded',()=>{
   },{rootMargin:'-42% 0px -52% 0px'});
   secs.forEach(id=>{const el=document.getElementById(id);if(el)io4.observe(el);});
 
+  /* Лёгкая Ozon-карусель: нативный scroll-snap + стрелки/индикаторы */
+  const ozonTrack=document.getElementById('ozon-track');
+  const ozonCards=ozonTrack?[...ozonTrack.querySelectorAll('.ozon-card')]:[];
+  const ozonDots=[...document.querySelectorAll('.ozon-dot')];
+  const ozonPrev=document.querySelector('.ozon-prev');
+  const ozonNext=document.querySelector('.ozon-next');
+  let ozonRAF=0;
+  function setOzonSlide(index){
+    ozonDots.forEach((dot,i)=>{
+      const active=i===index;
+      dot.classList.toggle('active',active);
+      dot.setAttribute('aria-pressed',String(active));
+    });
+  }
+  function updateOzonSlide(){
+    ozonRAF=0;
+    if(!ozonTrack||!ozonCards.length)return;
+    const left=ozonTrack.scrollLeft;
+    let best=0,dist=Infinity;
+    ozonCards.forEach((card,i)=>{
+      const d=Math.abs(card.offsetLeft-ozonTrack.offsetLeft-left);
+      if(d<dist){dist=d;best=i;}
+    });
+    setOzonSlide(best);
+  }
+  function scrollOzon(index){
+    if(!ozonTrack||!ozonCards[index])return;
+    const left=ozonCards[index].offsetLeft-ozonTrack.offsetLeft;
+    ozonTrack.scrollTo({left,behavior:reduced?'auto':'smooth'});
+    setOzonSlide(index);
+  }
+  if(ozonTrack){
+    ozonTrack.addEventListener('scroll',()=>{
+      if(!ozonRAF)ozonRAF=requestAnimationFrame(updateOzonSlide);
+    },{passive:true});
+    ozonPrev?.addEventListener('click',()=>{
+      const active=Math.max(0,ozonDots.findIndex(dot=>dot.classList.contains('active')));
+      scrollOzon(Math.max(0,active-1));
+    });
+    ozonNext?.addEventListener('click',()=>{
+      const active=Math.max(0,ozonDots.findIndex(dot=>dot.classList.contains('active')));
+      scrollOzon(Math.min(ozonCards.length-1,active+1));
+    });
+    ozonDots.forEach((dot,i)=>dot.addEventListener('click',()=>scrollOzon(i)));
+  }
+
+  if(backToTop){
+    backToTop.addEventListener('click',()=>hero.scrollIntoView({behavior:reduced?'auto':'smooth',block:'start'}));
+  }
+
   /* Тилт карточек с бутылками (десктоп) */
   if(!mobile && !reduced){
     document.querySelectorAll('.tilt').forEach(card=>{
@@ -222,7 +276,7 @@ document.addEventListener('DOMContentLoaded',()=>{
     });
   }
 
-  window.addEventListener('resize',queueMeasure,{passive:true});
+  window.addEventListener('resize',()=>{queueMeasure();updateOzonSlide();},{passive:true});
   window.addEventListener('load',queueMeasure,{once:true});
   if(document.fonts?.ready)document.fonts.ready.then(queueMeasure);
   queueMeasure();
