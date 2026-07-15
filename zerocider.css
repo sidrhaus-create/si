@@ -6,14 +6,14 @@
 
 :root{
   /* Строго из брендбука */
-  --purple:#6B3077;        /* Pantone 7663 C */
-  --purple-2:#7A3A88;      /* небольшое подсветление */
+  --purple:#5D2F6A;
+  --purple-2:#774282;
   --purple-hi:#8B4A9C;     /* пиковая точка градиента */
   --purple-deep:#3B1943;
-  --purple-ink:#2C1332;
+  --purple-ink:#3B1943;
   --void:#241028;
-  --lilac:#C899D4;
-  --lilac-soft:#E9DCEE;
+  --lilac:#8B4A9C;
+  --lilac-soft:#FFFFFF;
   --white:#FFFFFF;
   --black:#241028;
 
@@ -23,8 +23,8 @@
   --f-script:'Caveat',cursive;
 
   --r:22px;
-  --plate:linear-gradient(160deg, rgba(107,48,119,.92) 0%, rgba(59,25,67,.94) 55%, rgba(40,16,47,.95) 100%);
-  --plate-hi:linear-gradient(160deg, rgba(139,74,156,.88) 0%, rgba(107,48,119,.92) 60%, rgba(59,25,67,.94) 100%);
+  --plate:linear-gradient(160deg, rgba(93,47,106,.94) 0%, rgba(59,25,67,.95) 55%, rgba(36,16,40,.96) 100%);
+  --plate-hi:linear-gradient(160deg, rgba(119,66,130,.9) 0%, rgba(96,29,112,.93) 60%, rgba(59,25,67,.95) 100%);
   --stroke:rgba(255,255,255,.22);
   --stroke-hi:rgba(255,255,255,.5);
 }
@@ -46,7 +46,7 @@ a{color:inherit;text-decoration:none}
 #progress{position:fixed;top:0;left:0;height:3px;width:0;z-index:99;
   background:linear-gradient(90deg,var(--lilac),var(--white));border-radius:0 3px 3px 0}
 #glow{position:fixed;width:420px;height:420px;border-radius:50%;pointer-events:none;z-index:1;
-  background:radial-gradient(circle, rgba(200,153,212,.18), transparent 65%);
+  background:radial-gradient(circle, rgba(139,74,156,.18), transparent 65%);
   transform:translate(-50%,-50%);opacity:0;transition:opacity .4s;mix-blend-mode:screen}
 @media(hover:hover){#glow{opacity:1}}
 
@@ -55,10 +55,10 @@ a{color:inherit;text-decoration:none}
   padding:16px clamp(16px,4vw,48px);transition:padding .35s,background .35s,box-shadow .35s;
   background:transparent}
 #nav.solid{padding:9px clamp(16px,4vw,48px);
-  background:rgba(40,16,47,.85);backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);
+  background:rgba(36,16,40,.85);backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);
   box-shadow:0 1px 0 var(--stroke)}
-#nav .logo svg,#nav .logo img{height:40px;width:auto;transition:height .35s}
-#nav.solid .logo svg,#nav.solid .logo img{height:31px}
+#nav .logo svg,#nav .logo img{height:52px;width:auto;transition:height .35s}
+#nav.solid .logo svg,#nav.solid .logo img{height:40px}
 #navlinks{display:flex;gap:clamp(14px,2.6vw,34px);align-items:center}
 #navlinks a{font-size:13px;font-family:var(--f-caps);text-transform:uppercase;letter-spacing:.18em;
   opacity:.82;position:relative;padding:6px 2px;transition:opacity .25s}
@@ -72,32 +72,30 @@ a{color:inherit;text-decoration:none}
 #hero{height:360vh;position:relative;touch-action:pan-y}
 .stage{position:sticky;top:0;height:100vh;height:100svh;overflow:hidden;
   background:
-    radial-gradient(115% 88% at 50% 22%, #7A3A88 0%, #6B3077 34%, #2C1332 76%, #241028 100%),
+    radial-gradient(115% 88% at 50% 22%, #774282 0%, #6B3077 34%, #3B1943 76%, #241028 100%),
     #241028;touch-action:pan-y}
 #scrub,#scrubvid{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;touch-action:pan-y}
 #scrubvid{opacity:0;pointer-events:none;position:absolute;width:1px;height:1px;top:-9999px}
 .stage:after{content:'';position:absolute;inset:0;pointer-events:none;
   background:
-    linear-gradient(180deg, rgba(44,19,50,.42) 0%, transparent 24%, transparent 48%, rgba(36,16,40,.9) 100%),
+    linear-gradient(180deg, rgba(59,25,67,.42) 0%, transparent 24%, transparent 48%, rgba(36,16,40,.9) 100%),
     radial-gradient(80% 60% at 50% 50%, transparent 55%, rgba(107,48,119,.22) 100%)}
 #embers{position:absolute;inset:0;overflow:hidden;pointer-events:none;z-index:2}
 .ember{position:absolute;bottom:-14px;border-radius:50%;background:var(--lilac);opacity:0;
-  animation:rise linear infinite;box-shadow:0 0 10px rgba(200,153,212,.5)}
+  animation:rise linear infinite;box-shadow:0 0 10px rgba(139,74,156,.5)}
 @keyframes rise{
   0%{transform:translateY(0) translateX(0);opacity:0}
   12%{opacity:.8}
   100%{transform:translateY(-108vh) translateX(var(--dx,20px));opacity:0}
 }
 
-/* Крутящийся круговой бейдж */
+/* Вращающийся знак феникса */
 #badge{position:absolute;z-index:5;right:clamp(14px,4vw,56px);top:calc(72px + env(safe-area-inset-top));
-  width:clamp(84px,11vw,128px);height:clamp(84px,11vw,128px);pointer-events:none}
-#badge svg{width:100%;height:100%;overflow:visible}
-#badge .ring{animation:spin 18s linear infinite;transform-origin:50% 50%}
+  width:clamp(84px,11vw,128px);height:clamp(84px,11vw,128px);padding:6px;pointer-events:none;
+  display:grid;place-items:center}
+#badge img{width:100%;height:100%;object-fit:contain;animation:spin 22s linear infinite;transform-origin:50% 50%;
+  filter:drop-shadow(0 5px 12px rgba(36,16,40,.38))}
 @keyframes spin{to{transform:rotate(360deg)}}
-#badge text{font-family:var(--f-caps);font-size:11.5px;letter-spacing:3.5px;fill:var(--white)}
-#badge .zero{font-family:var(--f-head);font-weight:800;font-size:22px;fill:var(--white);letter-spacing:0}
-#badge circle.b{fill:rgba(107,48,119,.5)}
 
 /* Плашки героя — плотные, читабельные */
 .panel{position:absolute;z-index:6;left:50%;bottom:calc(30px + env(safe-area-inset-bottom));
@@ -107,12 +105,13 @@ a{color:inherit;text-decoration:none}
   border:1px solid var(--stroke);border-radius:var(--r);
   padding:24px 26px 26px;
   backdrop-filter:blur(16px) saturate(1.2);-webkit-backdrop-filter:blur(16px) saturate(1.2);
-  box-shadow:0 24px 60px rgba(0,0,0,.55),
+  box-shadow:0 24px 60px rgba(36,16,40,.55),
              inset 0 1px 0 rgba(255,255,255,.08),
              0 0 0 1px rgba(107,48,119,.4);
   opacity:0;pointer-events:none;
   transition:opacity .5s ease,transform .5s ease}
 .panel.on{opacity:1;pointer-events:auto;transform:translate(-50%,0) scale(1)}
+.panel.past{opacity:0;pointer-events:none;transform:translate3d(calc(-50% + 105vw),0,0) scale(.96)}
 .panel h1{font-family:var(--f-head);font-weight:800;font-size:clamp(30px,7.4vw,52px);line-height:1.04;letter-spacing:.01em}
 .panel h2{font-family:var(--f-head);font-weight:800;font-size:clamp(23px,5.6vw,36px);line-height:1.12}
 .panel .script{font-family:var(--f-script);font-size:clamp(24px,5.4vw,34px);color:var(--lilac);line-height:1.1;margin-top:8px;display:block}
@@ -151,8 +150,8 @@ section.blk{position:relative;padding:clamp(66px,11vw,130px) clamp(18px,5vw,64px
 .h-split .w{display:inline-block;overflow:hidden;vertical-align:top;padding-bottom:.08em;margin-right:.24em}
 .h-split .l{display:inline-block;transform:translateY(115%);transition:transform .7s cubic-bezier(.2,.7,.2,1)}
 .h-split.in .l{transform:translateY(0)}
-.ghost{position:absolute;font-family:var(--f-head);font-weight:800;color:transparent;
-  -webkit-text-stroke:1.5px rgba(255,255,255,.12);letter-spacing:.02em;
+.ghost{position:absolute;font-family:var(--f-head);font-weight:800;color:rgba(139,74,156,.09);
+  text-shadow:0 0 42px rgba(139,74,156,.12);letter-spacing:.02em;
   font-size:clamp(120px,26vw,320px);line-height:1;z-index:1;pointer-events:none;user-select:none}
 .reveal{opacity:0;transform:translateY(34px);transition:opacity .7s ease,transform .7s cubic-bezier(.2,.7,.2,1)}
 .reveal.in{opacity:1;transform:none}
@@ -161,7 +160,7 @@ section.blk{position:relative;padding:clamp(66px,11vw,130px) clamp(18px,5vw,64px
 #chto-eto{background:
   radial-gradient(80% 60% at 20% 10%, rgba(107,48,119,.55), transparent 60%),
   radial-gradient(70% 60% at 90% 90%, rgba(107,48,119,.4), transparent 60%),
-  linear-gradient(180deg, #241028 0%, #2C1332 48%, #3B1943 100%)}
+  linear-gradient(180deg, #241028 0%, #3B1943 48%, #3B1943 100%)}
 .feats{display:grid;grid-template-columns:repeat(auto-fit,minmax(235px,1fr));gap:14px;margin-top:clamp(28px,5vw,52px)}
 .feat{background:var(--plate);border:1px solid var(--stroke);border-radius:var(--r);
   padding:24px 22px;position:relative;overflow:hidden;transition:transform .35s,border-color .35s,box-shadow .35s}
@@ -171,14 +170,14 @@ section.blk{position:relative;padding:clamp(66px,11vw,130px) clamp(18px,5vw,64px
 .feat h3{font-family:var(--f-head);font-weight:700;font-size:18.5px;line-height:1.25;margin-bottom:8px}
 .feat p{font-size:14.5px;color:var(--lilac-soft)}
 .feat .wm{position:absolute;right:-14px;bottom:-22px;font-family:var(--f-head);font-weight:800;font-size:110px;
-  color:transparent;-webkit-text-stroke:1px rgba(255,255,255,.09);line-height:1}
+  color:rgba(255,255,255,.045);text-shadow:0 0 22px rgba(139,74,156,.08);line-height:1}
 .bottles{display:flex;justify-content:center;align-items:flex-end;gap:clamp(2px,2vw,26px);
   margin-top:clamp(38px,7vw,72px);position:relative;min-height:clamp(250px,44vw,470px)}
 .bottles:before{content:'';position:absolute;left:50%;bottom:6%;transform:translateX(-50%);
   width:min(560px,86%);height:44%;border-radius:50%;
-  background:radial-gradient(ellipse at center, rgba(200,153,212,.4), transparent 68%);filter:blur(10px)}
+  background:radial-gradient(ellipse at center, rgba(139,74,156,.4), transparent 68%);filter:blur(10px)}
 .bottles img{height:clamp(240px,42vw,440px);width:auto;position:relative;z-index:2;
-  filter:drop-shadow(0 26px 34px rgba(0,0,0,.65)) drop-shadow(0 0 30px rgba(107,48,119,.4));
+  filter:drop-shadow(0 26px 34px rgba(36,16,40,.65)) drop-shadow(0 0 30px rgba(107,48,119,.4));
   opacity:0;transform:translateY(60px) rotate(0deg);transition:opacity .8s ease,transform .9s cubic-bezier(.2,.7,.2,1)}
 .bottles.in img:nth-child(1){opacity:1;transform:translateY(12px) rotate(-8deg)}
 .bottles.in img:nth-child(2){opacity:1;transform:translateY(0) rotate(0);transition-delay:.12s;height:clamp(264px,46vw,480px)}
@@ -197,7 +196,7 @@ section.blk{position:relative;padding:clamp(66px,11vw,130px) clamp(18px,5vw,64px
   padding:clamp(40px,7vw,84px) 0;position:relative}
 .flavor+.flavor{border-top:1px solid rgba(255,255,255,.1)}
 .flavor .num{position:absolute;top:clamp(6px,2vw,20px);right:0;font-family:var(--f-head);font-weight:800;
-  font-size:clamp(88px,17vw,190px);color:transparent;-webkit-text-stroke:1.5px rgba(200,153,212,.28);line-height:1;z-index:1}
+  font-size:clamp(88px,17vw,190px);color:rgba(139,74,156,.13);text-shadow:0 0 34px rgba(139,74,156,.08);line-height:1;z-index:1}
 .flavor.alt .num{right:auto;left:0}
 .flavor .txt{position:relative;z-index:2}
 .flavor .txt .kind{font-family:var(--f-caps);text-transform:uppercase;letter-spacing:.26em;font-size:11.5px;color:var(--lilac);margin-bottom:10px}
@@ -209,7 +208,7 @@ section.blk{position:relative;padding:clamp(66px,11vw,130px) clamp(18px,5vw,64px
 .flavor .script{font-family:var(--f-script);font-size:clamp(24px,5vw,32px);color:var(--lilac);margin-top:16px;display:block}
 .flavor .art{position:relative;z-index:2;display:grid;place-items:center}
 .plate-card{
-  background:linear-gradient(160deg,#F7F1E0,#EDE1D0);
+  background:linear-gradient(160deg,#FFFFFF 0%,rgba(255,255,255,.92) 58%,rgba(139,74,156,.18) 100%);
   border-radius:26px;padding:clamp(24px,4vw,44px) clamp(20px,3vw,40px);
   display:grid;place-items:center;position:relative;width:min(360px,100%);
   box-shadow:0 30px 70px rgba(107,48,119,.55),
@@ -230,13 +229,13 @@ section.blk{position:relative;padding:clamp(66px,11vw,130px) clamp(18px,5vw,64px
   radial-gradient(80% 50% at 70% 80%, rgba(139,74,156,.4), transparent 60%),
   linear-gradient(180deg, #3B1943 -10%, #5D2F6A 40%, #6B3077 70%, #3B1943 100%)}
 #kak-eto .kicker{color:var(--lilac-soft)}
-#kak-eto .h-split{text-shadow:0 4px 24px rgba(0,0,0,.35)}
+#kak-eto .h-split{text-shadow:0 4px 24px rgba(36,16,40,.35)}
 .pipe{position:relative;margin-top:clamp(34px,6vw,64px);--padx:26px}
 .pipe .spine{position:absolute;left:var(--padx);top:0;bottom:0;width:3px;
   background:rgba(255,255,255,.16);border-radius:3px}
 .pipe .spinefill{position:absolute;left:var(--padx);top:0;width:3px;height:0;
   background:linear-gradient(180deg,var(--lilac) 0%, var(--white) 60%, var(--lilac) 100%);border-radius:3px;
-  box-shadow:0 0 16px rgba(255,255,255,.5),0 0 32px rgba(200,153,212,.5)}
+  box-shadow:0 0 16px rgba(255,255,255,.5),0 0 32px rgba(139,74,156,.5)}
 .step{position:relative;padding:0 0 clamp(48px,7vw,80px) calc(var(--padx) + 42px)}
 .step:last-child{padding-bottom:8px}
 .step .dot{position:absolute;left:calc(var(--padx) + 1.5px);top:2px;transform:translateX(-50%);
@@ -259,7 +258,7 @@ section.blk{position:relative;padding:clamp(66px,11vw,130px) clamp(18px,5vw,64px
 .draw .med{stroke-width:2.4}
 .draw .thin{stroke-width:1.6;stroke:rgba(255,255,255,.7)}
 .draw .fill-w{fill:rgba(255,255,255,.08)}
-.draw .fill-l{fill:rgba(200,153,212,.16)}
+.draw .fill-l{fill:rgba(139,74,156,.16)}
 .draw .accent{stroke:var(--lilac)}
 /* Прорисовка при скролле */
 .draw [data-line]{stroke-dasharray:1;stroke-dashoffset:1}
@@ -283,67 +282,35 @@ section.blk{position:relative;padding:clamp(66px,11vw,130px) clamp(18px,5vw,64px
 .step.in .flow{stroke-dasharray:6 8;animation:drawline 1s ease forwards, flow 2s linear 1.5s infinite}
 @keyframes flow{to{stroke-dashoffset:-14}}
 
-/* ============ ГДЕ КУПИТЬ ============ */
-#gde-kupit{background:
-  radial-gradient(75% 62% at 100% 100%, rgba(139,74,156,.46), transparent 62%),
-  radial-gradient(68% 54% at 0% 0%, rgba(93,47,106,.5), transparent 62%),
-  linear-gradient(180deg,#241028 0%,#3B1943 62%,#241028 100%)}
-.buy-bottles{position:relative;isolation:isolate;width:min(920px,100%);min-height:clamp(430px,55vw,650px);
-  margin:clamp(28px,4vw,48px) auto clamp(36px,6vw,70px)}
-.buy-bottles:before{content:'';position:absolute;z-index:0;left:50%;bottom:2%;width:min(760px,92%);height:42%;
-  transform:translateX(-50%);border-radius:50%;filter:blur(16px);
-  background:radial-gradient(ellipse,rgba(139,74,156,.62) 0%,rgba(107,48,119,.34) 42%,transparent 72%)}
-.buy-bottle{position:absolute;bottom:0;left:50%;width:auto;object-fit:contain;transform-origin:50% 100%;
-  filter:drop-shadow(0 34px 34px rgba(36,16,40,.7)) drop-shadow(0 0 34px rgba(139,74,156,.28))}
-.buy-bottle-left,.buy-bottle-right{z-index:1;height:clamp(350px,46vw,540px);opacity:.96}
-.buy-bottle-left{transform:translateX(-100%) translateY(18px) rotate(-9deg)}
-.buy-bottle-right{transform:translateX(0) translateY(18px) rotate(9deg)}
-.buy-bottle-center{z-index:3;height:clamp(410px,54vw,630px);transform:translateX(-50%)}
-.ozon-head{margin-bottom:22px}
-.ozon-eyebrow{display:block;font-family:var(--f-caps);text-transform:uppercase;letter-spacing:.25em;
-  font-size:11px;color:var(--lilac);margin-bottom:8px}
-.ozon-head h3{font-family:var(--f-head);font-size:clamp(25px,4vw,38px);line-height:1.1}
-.ozon-products{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px;align-items:stretch}
-.ozon-card{display:flex;flex-direction:column;min-width:0;padding:16px;border-radius:24px;
-  color:#241028;background:linear-gradient(155deg,#fff 0%,#f6eff8 100%);
-  box-shadow:0 24px 54px rgba(36,16,40,.38);border:1px solid rgba(255,255,255,.7)}
-.ozon-card-media{display:grid;place-items:center;min-height:310px;border-radius:17px;overflow:hidden;
-  background:radial-gradient(circle at 50% 28%,#fff 0%,#f5edf7 58%,#eadced 100%)}
-.ozon-card-media img{width:auto;height:300px;max-width:100%;object-fit:contain;
-  filter:drop-shadow(0 18px 20px rgba(59,25,67,.24))}
-.ozon-badges{display:flex;flex-wrap:wrap;gap:6px;margin:16px 0 12px}
-.ozon-badges span{padding:6px 9px;border-radius:999px;background:#ead9ee;color:#5D2F6A;
-  font-size:10.5px;font-weight:800;line-height:1;white-space:nowrap}
-.ozon-card h3{font-family:var(--f-head);font-size:22px;line-height:1.15;margin-bottom:9px}
-.ozon-card p{font-size:13.5px;line-height:1.5;color:#5a4560;margin-bottom:18px}
-.ozon-btn{display:block;margin-top:auto;padding:13px 16px;border-radius:13px;text-align:center;
-  background:#005BFF;color:#fff;font-family:var(--f-head);font-weight:800;font-size:14px;
-  box-shadow:0 11px 24px rgba(0,91,255,.24);transition:background .25s,transform .25s,box-shadow .25s}
-.ozon-btn:hover{background:#0049d8;transform:translateY(-2px);box-shadow:0 15px 30px rgba(0,91,255,.3)}
-.cta{margin-top:clamp(36px,6vw,60px);text-align:center;
-  background:linear-gradient(135deg, var(--purple-hi) 0%, var(--purple) 55%, var(--purple-deep) 100%);
-  border:1px solid var(--stroke-hi);border-radius:28px;padding:clamp(36px,6vw,64px) 22px;position:relative;overflow:hidden;
-  box-shadow:0 30px 70px rgba(107,48,119,.5)}
-.cta:before{content:'';position:absolute;inset:-40%;
-  background:radial-gradient(circle at 30% 20%, rgba(255,255,255,.14), transparent 40%),
-             radial-gradient(circle at 75% 80%, rgba(200,153,212,.25), transparent 45%)}
-.cta h2{font-family:var(--f-head);font-weight:800;font-size:clamp(25px,6vw,44px);position:relative}
-.cta .script{font-family:var(--f-script);font-size:clamp(25px,5vw,34px);color:var(--lilac-soft);display:block;margin:8px 0 22px;position:relative}
-.btn{position:relative;display:inline-block;background:var(--white);color:var(--purple);
-  font-family:var(--f-head);font-weight:800;font-size:16.5px;letter-spacing:.02em;
-  border:none;border-radius:99px;padding:17px 36px;cursor:pointer;overflow:hidden;
-  box-shadow:0 14px 34px rgba(0,0,0,.35)}
-.btn .rip{position:absolute;border-radius:50%;background:rgba(107,48,119,.35);transform:scale(0);animation:ripple .6s ease-out forwards;pointer-events:none}
-@keyframes ripple{to{transform:scale(3.6);opacity:0}}
+/* ============ OZON ВНУТРИ КАРТОЧЕК ВКУСОВ ============ */
+.flavor-buy{display:grid;grid-template-columns:92px minmax(0,1fr);gap:13px;align-items:center;
+  width:min(480px,100%);margin-top:20px;padding:11px;border-radius:18px;color:#241028;
+  background:linear-gradient(150deg,#FFFFFF 0%,rgba(255,255,255,.94) 62%,rgba(139,74,156,.16) 100%);
+  border:1px solid rgba(255,255,255,.8);box-shadow:0 18px 44px rgba(36,16,40,.34)}
+.flavor-buy>img{width:92px;height:126px;object-fit:contain;border-radius:13px;
+  background:rgba(139,74,156,.1);filter:drop-shadow(0 12px 13px rgba(59,25,67,.22))}
+.flavor-buy-info{min-width:0}
+.flavor-buy-label{display:block;font-family:var(--f-caps);font-weight:800;text-transform:uppercase;
+  letter-spacing:.18em;font-size:10px;color:#5D2F6A}
+.flavor-buy-badges{display:flex;flex-wrap:wrap;gap:5px;margin:6px 0 9px}
+.flavor-buy-badges span{padding:5px 7px;border-radius:999px;background:rgba(139,74,156,.16);
+  color:#5D2F6A;font-size:9.5px;font-weight:800;line-height:1;white-space:nowrap}
+.flavor-buy a{display:block;padding:11px 13px;border-radius:11px;text-align:center;background:#005BFF;
+  color:#FFFFFF;font-family:var(--f-head);font-size:13px;font-weight:800;
+  box-shadow:0 9px 20px rgba(0,91,255,.22);transition:filter .25s,transform .25s,box-shadow .25s}
+.flavor-buy a:hover{filter:brightness(.9);transform:translateY(-2px);box-shadow:0 13px 26px rgba(0,91,255,.28)}
 
-/* Плавающая CTA на мобильных */
-#fab{position:fixed;z-index:80;right:14px;bottom:calc(14px + env(safe-area-inset-bottom));
-  background:var(--white);color:var(--purple);font-family:var(--f-head);font-weight:800;font-size:14px;
-  border-radius:99px;padding:14px 20px;box-shadow:0 12px 30px rgba(0,0,0,.5),0 0 0 2px rgba(107,48,119,.4);
-  display:none;align-items:center;gap:8px;
-  opacity:0;transform:translateY(70px);transition:opacity .4s,transform .4s;
-  border:none;cursor:pointer}
-#fab.show{opacity:1;transform:none}
+/* ============ ФЕНИКС В ФИНАЛЕ ПРОИЗВОДСТВА ============ */
+.step .phoenix-flight{position:relative;display:flex;align-items:center;min-height:150px;overflow:visible}
+.phoenix-flight img{width:auto;height:clamp(100px,18vw,160px);opacity:0;
+  transform:translateX(-72px) rotate(-7deg);filter:drop-shadow(0 18px 24px rgba(36,16,40,.42))}
+.phoenix-trail{position:absolute;left:0;top:50%;width:clamp(90px,18vw,150px);height:3px;border-radius:999px;
+  background:linear-gradient(90deg,transparent,rgba(255,255,255,.35),#8B4A9C);
+  box-shadow:0 0 16px rgba(139,74,156,.52);transform:scaleX(0);transform-origin:left center}
+.step.in .phoenix-flight img{animation:phoenix-forward 1.2s cubic-bezier(.18,.76,.22,1) forwards}
+.step.in .phoenix-trail{animation:trail-forward 1.05s cubic-bezier(.18,.76,.22,1) forwards}
+@keyframes phoenix-forward{to{opacity:1;transform:translateX(clamp(42px,11vw,110px)) rotate(4deg)}}
+@keyframes trail-forward{50%{transform:scaleX(1);opacity:1}to{transform:translateX(36px) scaleX(.7);opacity:.16}}
 
 /* ============ ФУТЕР ============ */
 footer{background:linear-gradient(180deg,#241028 0%,#3B1943 100%);
@@ -358,13 +325,13 @@ footer li{margin-bottom:9px;font-size:14.5px;opacity:.85}
 footer li a:hover{opacity:1;text-decoration:underline}
 .fbot{max-width:1160px;margin:40px auto 0;padding-top:20px;border-top:1px solid rgba(255,255,255,.12);
   display:flex;justify-content:space-between;gap:14px;flex-wrap:wrap;font-size:12.5px;opacity:.65}
-.zero-badge{display:inline-block;border:1px solid rgba(200,153,212,.5);border-radius:99px;padding:5px 13px;
+.zero-badge{display:inline-block;border:1px solid rgba(139,74,156,.5);border-radius:99px;padding:5px 13px;
   font-family:var(--f-caps);text-transform:uppercase;letter-spacing:.2em;font-size:10.5px;color:var(--lilac)}
 
 /* ============ МОБИЛЬНАЯ ВЕРСИЯ ============ */
 @media(max-width:900px){
   #burger{display:block}
-  #navlinks{position:fixed;inset:0;background:rgba(28,10,34,.97);backdrop-filter:blur(18px);
+  #navlinks{position:fixed;inset:0;background:rgba(36,16,40,.97);backdrop-filter:blur(18px);
     flex-direction:column;justify-content:center;gap:30px;
     opacity:0;pointer-events:none;transition:opacity .35s}
   #navlinks.open{opacity:1;pointer-events:auto}
@@ -373,13 +340,11 @@ footer li a:hover{opacity:1;text-decoration:underline}
   .flavor.alt .txt{order:1}.flavor.alt .art{order:2}
   .flavor .num{font-size:clamp(88px,24vw,150px)}
   #hero{height:300vh}
-  .ozon-products{grid-template-columns:repeat(2,minmax(0,1fr))}
   .fgrid{grid-template-columns:1fr 1fr}
-  #fab{display:flex}
 }
 @media(max-width:520px){
-  #nav .logo svg,#nav .logo img{height:32px}
-  #nav.solid .logo svg,#nav.solid .logo img{height:27px}
+  #nav .logo svg,#nav .logo img{height:41px}
+  #nav.solid .logo svg,#nav.solid .logo img{height:35px}
   #hero{height:300vh}
   .panel{padding:19px 18px 20px}
   #badge{top:calc(60px + env(safe-area-inset-top));right:14px}
@@ -390,18 +355,9 @@ footer li a:hover{opacity:1;text-decoration:underline}
   .feat .n{width:29px;height:29px;font-size:13px;margin-bottom:10px}
   .bottles img{height:clamp(200px,54vw,280px)}
   .bottles.in img:nth-child(2){height:clamp(218px,60vw,300px)}
-  .buy-bottles{min-height:clamp(350px,116vw,470px);margin-top:22px}
-  .buy-bottle-left,.buy-bottle-right{height:clamp(275px,88vw,370px)}
-  .buy-bottle-left{transform:translateX(-84%) translateY(16px) rotate(-8deg)}
-  .buy-bottle-right{transform:translateX(-16%) translateY(16px) rotate(8deg)}
-  .buy-bottle-center{height:clamp(335px,108vw,455px)}
-  .ozon-products{display:flex;gap:14px;overflow-x:auto;overscroll-behavior-inline:contain;
-    scroll-snap-type:x mandatory;scroll-padding-inline:2px;padding:2px 2px 18px;
-    scrollbar-width:none;-webkit-overflow-scrolling:touch;touch-action:pan-x pan-y}
-  .ozon-products::-webkit-scrollbar{display:none}
-  .ozon-card{flex:0 0 min(84vw, 330px);scroll-snap-align:start;scroll-snap-stop:always}
-  .ozon-card-media{min-height:284px}
-  .ozon-card-media img{height:274px}
+  .flavor-buy{grid-template-columns:78px minmax(0,1fr);gap:10px;padding:9px}
+  .flavor-buy>img{width:78px;height:108px}
+  .flavor-buy a{padding:10px;font-size:12.5px}
   .pipe{--padx:19px}
   .step{padding-left:calc(var(--padx) + 33px);padding-bottom:44px}
   .step .dot{width:36px;height:36px;font-size:12.5px}
@@ -414,6 +370,9 @@ footer li a:hover{opacity:1;text-decoration:underline}
   .draw [data-line],.draw .hatch{stroke-dasharray:none;stroke-dashoffset:0;opacity:1}
   .step h3,.step p{opacity:1;transform:none}
   .bottles img{opacity:1;transform:none}
-  .buy-bottles,.ozon-card{opacity:1;transform:none}
-  .panel{opacity:1}
+  .phoenix-flight img{opacity:1;transform:translateX(42px) rotate(0)}
+  .phoenix-trail{display:none}
+  .panel{transition:none}
+  .panel.on{opacity:1;transform:translate(-50%,0) scale(1)}
+  .panel.past{opacity:0;transform:translate3d(calc(-50% + 105vw),0,0) scale(.96)}
 }

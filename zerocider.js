@@ -18,7 +18,7 @@ document.addEventListener('DOMContentLoaded',()=>{
   navlinks.querySelectorAll('a').forEach(a=>a.addEventListener('click',()=>navlinks.classList.remove('open')));
 
   /* Бегущая строка */
-  const MQ='<span>0.0% алкоголя</span><span class="o">•</span><span>Настоящий сидровый вкус</span><span class="o">•</span><span>ГОСТ Р 59480-2021</span><span class="o">•</span><span>White Phoenix</span><span class="o">•</span><span>Сделано в России</span><span class="o">•</span>';
+  const MQ='<span>0.0% алкоголя</span><span class="o">•</span><span>Настоящий сидровый вкус</span><span class="o">•</span><span>ГОСТ</span><span class="o">•</span><span>White Phoenix</span><span class="o">•</span><span>Сделано в России</span><span class="o">•</span>';
   ['mq1','mq2'].forEach(id=>{const t=document.getElementById(id); if(t) t.innerHTML=MQ+MQ;});
 
   /* Искры */
@@ -60,7 +60,7 @@ document.addEventListener('DOMContentLoaded',()=>{
     cw=canvas.clientWidth; ch=canvas.clientHeight;
     canvas.width=cw*dpr; canvas.height=ch*dpr;
     ctx.setTransform(dpr,0,0,dpr,0,0);
-    ctx.fillStyle='#2C1332';
+    ctx.fillStyle='#3B1943';
     ctx.fillRect(0,0,cw,ch);
   }
 
@@ -89,12 +89,10 @@ document.addEventListener('DOMContentLoaded',()=>{
   const cue=document.getElementById('cue');
   let target=0, current=0;
   const paras=[...document.querySelectorAll('[data-para]')];
-  const fab=document.getElementById('fab');
-  const gde=document.getElementById('gde-kupit');
   const pipe=document.getElementById('pipe');
   const spineFill=document.getElementById('spinefill');
   const progress=document.getElementById('progress');
-  const metrics={heroTop:0,heroHeight:0,heroRange:1,gdeTop:0,pipeTop:0,pipeHeight:1,pageRange:1};
+  const metrics={heroTop:0,heroHeight:0,heroRange:1,pipeTop:0,pipeHeight:1,pageRange:1};
   const paraMetrics=paras.map(el=>({el,center:0,amt:parseFloat(el.dataset.para)||0.1}));
   let canvasRAF=0,scrollRAF=0,measureRAF=0;
 
@@ -116,7 +114,6 @@ document.addEventListener('DOMContentLoaded',()=>{
     metrics.heroTop=docTop(hero);
     metrics.heroHeight=hero.offsetHeight;
     metrics.heroRange=Math.max(1,metrics.heroHeight-innerHeight);
-    metrics.gdeTop=docTop(gde);
     metrics.pipeTop=pipe?docTop(pipe):0;
     metrics.pipeHeight=pipe?Math.max(1,pipe.offsetHeight):1;
     metrics.pageRange=Math.max(1,document.documentElement.scrollHeight-innerHeight);
@@ -136,7 +133,9 @@ document.addEventListener('DOMContentLoaded',()=>{
     cue.classList.toggle('hide',p>0.04);
     panels.forEach((pl,i)=>{
       const a=i/panels.length,b=(i+1)/panels.length;
-      pl.classList.toggle('on',p>=a-0.02&&p<b-0.06);
+      const last=i===panels.length-1;
+      pl.classList.toggle('on',p>=a-0.02&&(last||p<b-0.02));
+      pl.classList.toggle('past',!last&&p>=b-0.02);
     });
     progress.style.width=((y/metrics.pageRange)*100)+'%';
     nav.classList.toggle('solid',y>30);
@@ -144,11 +143,6 @@ document.addEventListener('DOMContentLoaded',()=>{
       const c=(item.center-y-vh/2)/vh;
       item.el.style.transform='translateY('+(-c*item.amt*100)+'px)';
     });
-    if(fab){
-      const heroDone=y>metrics.heroTop+metrics.heroHeight-vh*0.5;
-      const nearGde=y+vh*0.9>metrics.gdeTop;
-      fab.classList.toggle('show',heroDone&&!nearGde);
-    }
     if(spineFill){
       const pipeP=Math.min(1,Math.max(0,(y+vh*0.62-metrics.pipeTop)/(metrics.pipeHeight*0.82)));
       spineFill.style.height=(pipeP*100)+'%';
@@ -225,22 +219,6 @@ document.addEventListener('DOMContentLoaded',()=>{
         card.style.transform='rotateY('+(x*10)+'deg) rotateX('+(-y*8)+'deg)';
       });
       card.addEventListener('pointerleave',()=>{r=null;card.style.transform='';});
-    });
-  }
-
-  /* Кнопка со splash */
-  const btn=document.getElementById('ctabtn');
-  if(btn){
-    btn.addEventListener('click',e=>{
-      const r=btn.getBoundingClientRect();
-      const rip=document.createElement('span');rip.className='rip';
-      const s=Math.max(r.width,r.height);
-      rip.style.width=rip.style.height=s+'px';
-      rip.style.left=(e.clientX-r.left-s/2)+'px';
-      rip.style.top=(e.clientY-r.top-s/2)+'px';
-      btn.appendChild(rip);
-      setTimeout(()=>rip.remove(),650);
-      document.getElementById('gde-kupit').scrollIntoView({behavior: reduced?'auto':'smooth'});
     });
   }
 
