@@ -41,19 +41,104 @@ document.addEventListener('DOMContentLoaded',()=>{
   ['mq1','mq2'].forEach(id=>{
     const t=document.getElementById(id);
     if(!t)return;
-    t.innerHTML=MQ+MQ+MQ+MQ; /* 4 копии — трек всегда шире экрана, шов на -50% бесшовный */
+    let copies=4;
+    t.innerHTML=MQ.repeat(copies);
+    /* Заполняем, пока трек не станет минимум вдвое шире экрана (чётное число копий — шов на -50% бесшовный) */
+    while(t.scrollWidth<innerWidth*2&&copies<12){
+      copies+=2;
+      t.innerHTML=MQ.repeat(copies);
+    }
     requestAnimationFrame(()=>t.classList.add('go'));
   });
 
   /* Скролл-скраб: предзагруженные кадры высокого качества */
-  const FRAMES = ["https://sidrhaus-create.github.io/si/assets/zerocider_asset_04_3cc9473f5b.webp","https://sidrhaus-create.github.io/si/assets/zerocider_asset_05_110b95d500.webp","https://sidrhaus-create.github.io/si/assets/zerocider_asset_06_0042483a6d.webp","https://sidrhaus-create.github.io/si/assets/zerocider_asset_07_7d883bb8d9.webp","https://sidrhaus-create.github.io/si/assets/zerocider_asset_08_74113ad742.webp","https://sidrhaus-create.github.io/si/assets/zerocider_asset_09_b8fe38f754.webp","https://sidrhaus-create.github.io/si/assets/zerocider_asset_10_316c70033b.webp","https://sidrhaus-create.github.io/si/assets/zerocider_asset_11_29124efd7d.webp","https://sidrhaus-create.github.io/si/assets/zerocider_asset_12_dacd47fe05.webp","https://sidrhaus-create.github.io/si/assets/zerocider_asset_13_a85cd989fa.webp","https://sidrhaus-create.github.io/si/assets/zerocider_asset_14_a6b37278fe.webp","https://sidrhaus-create.github.io/si/assets/zerocider_asset_15_13a2cd2bd3.webp","https://sidrhaus-create.github.io/si/assets/zerocider_asset_16_8e95e9431e.webp","https://sidrhaus-create.github.io/si/assets/zerocider_asset_17_82c1fd5af2.webp","https://sidrhaus-create.github.io/si/assets/zerocider_asset_18_7f91864136.webp","https://sidrhaus-create.github.io/si/assets/zerocider_asset_19_3da363a942.webp","https://sidrhaus-create.github.io/si/assets/zerocider_asset_20_2e467b653c.webp","https://sidrhaus-create.github.io/si/assets/zerocider_asset_21_0857dc7afd.webp","https://sidrhaus-create.github.io/si/assets/zerocider_asset_22_a5f134ace7.webp","https://sidrhaus-create.github.io/si/assets/zerocider_asset_23_46e5e44eb2.webp","https://sidrhaus-create.github.io/si/assets/zerocider_asset_24_9970f2717c.webp","https://sidrhaus-create.github.io/si/assets/zerocider_asset_25_918a64e7fe.webp","https://sidrhaus-create.github.io/si/assets/zerocider_asset_26_283b29d32d.webp","https://sidrhaus-create.github.io/si/assets/zerocider_asset_27_d6b109955a.webp","https://sidrhaus-create.github.io/si/assets/zerocider_asset_28_1f98f3be77.webp","https://sidrhaus-create.github.io/si/assets/zerocider_asset_29_e14c4dcfff.webp","https://sidrhaus-create.github.io/si/assets/zerocider_asset_30_59f773ef2d.webp","https://sidrhaus-create.github.io/si/assets/zerocider_asset_31_97b4d35409.webp","https://sidrhaus-create.github.io/si/assets/zerocider_asset_32_258a1b6b3f.webp","https://sidrhaus-create.github.io/si/assets/zerocider_asset_33_9944ff48c8.webp","https://sidrhaus-create.github.io/si/assets/zerocider_asset_34_0131310e38.webp","https://sidrhaus-create.github.io/si/assets/zerocider_asset_35_ada020edac.webp","https://sidrhaus-create.github.io/si/assets/zerocider_asset_36_c52f45b74c.webp","https://sidrhaus-create.github.io/si/assets/zerocider_asset_37_c6911efaa7.webp","https://sidrhaus-create.github.io/si/assets/zerocider_asset_38_37eeee3c6d.webp","https://sidrhaus-create.github.io/si/assets/zerocider_asset_39_b7b99c04f1.webp","https://sidrhaus-create.github.io/si/assets/zerocider_asset_40_d43dd9ba55.webp","https://sidrhaus-create.github.io/si/assets/zerocider_asset_41_4fc4190631.webp","https://sidrhaus-create.github.io/si/assets/zerocider_asset_42_20f04c766c.webp","https://sidrhaus-create.github.io/si/assets/zerocider_asset_43_0a5cfb9fb6.webp","https://sidrhaus-create.github.io/si/assets/zerocider_asset_44_6fdac8774f.webp","https://sidrhaus-create.github.io/si/assets/zerocider_asset_45_97c7008e46.webp","https://sidrhaus-create.github.io/si/assets/zerocider_asset_46_42061d4026.webp","https://sidrhaus-create.github.io/si/assets/zerocider_asset_47_c7fed475b5.webp","https://sidrhaus-create.github.io/si/assets/zerocider_asset_48_031d8ff843.webp","https://sidrhaus-create.github.io/si/assets/zerocider_asset_49_4d716a4f63.webp","https://sidrhaus-create.github.io/si/assets/zerocider_asset_50_e068148b50.webp","https://sidrhaus-create.github.io/si/assets/zerocider_asset_51_86a0038d0e.webp","https://sidrhaus-create.github.io/si/assets/zerocider_asset_52_0dabf6b71f.webp"];
-  const FRAME_SEQUENCE=mobile
+  /* ===== Наборы кадров =====
+     DESKTOP_FRAMES — текущие горизонтальные кадры.
+     MOBILE_FRAMES — вертикальные кадры 9:16 (1080×1920), схема:
+       https://sidrhaus-create.github.io/si/assets/mobile-frames/frame-01.webp
+       https://sidrhaus-create.github.io/si/assets/mobile-frames/frame-02.webp
+       ... (двузначная нумерация по порядку)
+     Как только массив будет заполнен ссылками, телефоны (≤768px)
+     автоматически перейдут на него с полноэкранным cover-отображением. */
+  const DESKTOP_FRAMES = ["https://sidrhaus-create.github.io/si/assets/zerocider_asset_04_3cc9473f5b.webp","https://sidrhaus-create.github.io/si/assets/zerocider_asset_05_110b95d500.webp","https://sidrhaus-create.github.io/si/assets/zerocider_asset_06_0042483a6d.webp","https://sidrhaus-create.github.io/si/assets/zerocider_asset_07_7d883bb8d9.webp","https://sidrhaus-create.github.io/si/assets/zerocider_asset_08_74113ad742.webp","https://sidrhaus-create.github.io/si/assets/zerocider_asset_09_b8fe38f754.webp","https://sidrhaus-create.github.io/si/assets/zerocider_asset_10_316c70033b.webp","https://sidrhaus-create.github.io/si/assets/zerocider_asset_11_29124efd7d.webp","https://sidrhaus-create.github.io/si/assets/zerocider_asset_12_dacd47fe05.webp","https://sidrhaus-create.github.io/si/assets/zerocider_asset_13_a85cd989fa.webp","https://sidrhaus-create.github.io/si/assets/zerocider_asset_14_a6b37278fe.webp","https://sidrhaus-create.github.io/si/assets/zerocider_asset_15_13a2cd2bd3.webp","https://sidrhaus-create.github.io/si/assets/zerocider_asset_16_8e95e9431e.webp","https://sidrhaus-create.github.io/si/assets/zerocider_asset_17_82c1fd5af2.webp","https://sidrhaus-create.github.io/si/assets/zerocider_asset_18_7f91864136.webp","https://sidrhaus-create.github.io/si/assets/zerocider_asset_19_3da363a942.webp","https://sidrhaus-create.github.io/si/assets/zerocider_asset_20_2e467b653c.webp","https://sidrhaus-create.github.io/si/assets/zerocider_asset_21_0857dc7afd.webp","https://sidrhaus-create.github.io/si/assets/zerocider_asset_22_a5f134ace7.webp","https://sidrhaus-create.github.io/si/assets/zerocider_asset_23_46e5e44eb2.webp","https://sidrhaus-create.github.io/si/assets/zerocider_asset_24_9970f2717c.webp","https://sidrhaus-create.github.io/si/assets/zerocider_asset_25_918a64e7fe.webp","https://sidrhaus-create.github.io/si/assets/zerocider_asset_26_283b29d32d.webp","https://sidrhaus-create.github.io/si/assets/zerocider_asset_27_d6b109955a.webp","https://sidrhaus-create.github.io/si/assets/zerocider_asset_28_1f98f3be77.webp","https://sidrhaus-create.github.io/si/assets/zerocider_asset_29_e14c4dcfff.webp","https://sidrhaus-create.github.io/si/assets/zerocider_asset_30_59f773ef2d.webp","https://sidrhaus-create.github.io/si/assets/zerocider_asset_31_97b4d35409.webp","https://sidrhaus-create.github.io/si/assets/zerocider_asset_32_258a1b6b3f.webp","https://sidrhaus-create.github.io/si/assets/zerocider_asset_33_9944ff48c8.webp","https://sidrhaus-create.github.io/si/assets/zerocider_asset_34_0131310e38.webp","https://sidrhaus-create.github.io/si/assets/zerocider_asset_35_ada020edac.webp","https://sidrhaus-create.github.io/si/assets/zerocider_asset_36_c52f45b74c.webp","https://sidrhaus-create.github.io/si/assets/zerocider_asset_37_c6911efaa7.webp","https://sidrhaus-create.github.io/si/assets/zerocider_asset_38_37eeee3c6d.webp","https://sidrhaus-create.github.io/si/assets/zerocider_asset_39_b7b99c04f1.webp","https://sidrhaus-create.github.io/si/assets/zerocider_asset_40_d43dd9ba55.webp","https://sidrhaus-create.github.io/si/assets/zerocider_asset_41_4fc4190631.webp","https://sidrhaus-create.github.io/si/assets/zerocider_asset_42_20f04c766c.webp","https://sidrhaus-create.github.io/si/assets/zerocider_asset_43_0a5cfb9fb6.webp","https://sidrhaus-create.github.io/si/assets/zerocider_asset_44_6fdac8774f.webp","https://sidrhaus-create.github.io/si/assets/zerocider_asset_45_97c7008e46.webp","https://sidrhaus-create.github.io/si/assets/zerocider_asset_46_42061d4026.webp","https://sidrhaus-create.github.io/si/assets/zerocider_asset_47_c7fed475b5.webp","https://sidrhaus-create.github.io/si/assets/zerocider_asset_48_031d8ff843.webp","https://sidrhaus-create.github.io/si/assets/zerocider_asset_49_4d716a4f63.webp","https://sidrhaus-create.github.io/si/assets/zerocider_asset_50_e068148b50.webp","https://sidrhaus-create.github.io/si/assets/zerocider_asset_51_86a0038d0e.webp","https://sidrhaus-create.github.io/si/assets/zerocider_asset_52_0dabf6b71f.webp"];
+  const MOBILE_FRAMES = [
+    "https://sidrhaus-create.github.io/si/assets/mobile-frames/frame-01.webp",
+    "https://sidrhaus-create.github.io/si/assets/mobile-frames/frame-02.webp",
+    "https://sidrhaus-create.github.io/si/assets/mobile-frames/frame-03.webp",
+    "https://sidrhaus-create.github.io/si/assets/mobile-frames/frame-04.webp",
+    "https://sidrhaus-create.github.io/si/assets/mobile-frames/frame-05.webp",
+    "https://sidrhaus-create.github.io/si/assets/mobile-frames/frame-06.webp",
+    "https://sidrhaus-create.github.io/si/assets/mobile-frames/frame-07.webp",
+    "https://sidrhaus-create.github.io/si/assets/mobile-frames/frame-08.webp",
+    "https://sidrhaus-create.github.io/si/assets/mobile-frames/frame-09.webp",
+    "https://sidrhaus-create.github.io/si/assets/mobile-frames/frame-10.webp",
+    "https://sidrhaus-create.github.io/si/assets/mobile-frames/frame-11.webp",
+    "https://sidrhaus-create.github.io/si/assets/mobile-frames/frame-12.webp",
+    "https://sidrhaus-create.github.io/si/assets/mobile-frames/frame-13.webp",
+    "https://sidrhaus-create.github.io/si/assets/mobile-frames/frame-14.webp",
+    "https://sidrhaus-create.github.io/si/assets/mobile-frames/frame-15.webp",
+    "https://sidrhaus-create.github.io/si/assets/mobile-frames/frame-16.webp",
+    "https://sidrhaus-create.github.io/si/assets/mobile-frames/frame-17.webp",
+    "https://sidrhaus-create.github.io/si/assets/mobile-frames/frame-18.webp",
+    "https://sidrhaus-create.github.io/si/assets/mobile-frames/frame-19.webp",
+    "https://sidrhaus-create.github.io/si/assets/mobile-frames/frame-20.webp",
+    "https://sidrhaus-create.github.io/si/assets/mobile-frames/frame-21.webp",
+    "https://sidrhaus-create.github.io/si/assets/mobile-frames/frame-22.webp",
+    "https://sidrhaus-create.github.io/si/assets/mobile-frames/frame-23.webp",
+    "https://sidrhaus-create.github.io/si/assets/mobile-frames/frame-24.webp",
+    "https://sidrhaus-create.github.io/si/assets/mobile-frames/frame-25.webp",
+    "https://sidrhaus-create.github.io/si/assets/mobile-frames/frame-26.webp",
+    "https://sidrhaus-create.github.io/si/assets/mobile-frames/frame-27.webp",
+    "https://sidrhaus-create.github.io/si/assets/mobile-frames/frame-28.webp",
+    "https://sidrhaus-create.github.io/si/assets/mobile-frames/frame-29.webp",
+    "https://sidrhaus-create.github.io/si/assets/mobile-frames/frame-30.webp",
+    "https://sidrhaus-create.github.io/si/assets/mobile-frames/frame-31.webp",
+    "https://sidrhaus-create.github.io/si/assets/mobile-frames/frame-32.webp",
+    "https://sidrhaus-create.github.io/si/assets/mobile-frames/frame-33.webp",
+    "https://sidrhaus-create.github.io/si/assets/mobile-frames/frame-34.webp",
+    "https://sidrhaus-create.github.io/si/assets/mobile-frames/frame-35.webp",
+    "https://sidrhaus-create.github.io/si/assets/mobile-frames/frame-36.webp",
+    "https://sidrhaus-create.github.io/si/assets/mobile-frames/frame-37.webp",
+    "https://sidrhaus-create.github.io/si/assets/mobile-frames/frame-38.webp",
+    "https://sidrhaus-create.github.io/si/assets/mobile-frames/frame-39.webp",
+    "https://sidrhaus-create.github.io/si/assets/mobile-frames/frame-40.webp",
+    "https://sidrhaus-create.github.io/si/assets/mobile-frames/frame-41.webp",
+    "https://sidrhaus-create.github.io/si/assets/mobile-frames/frame-42.webp",
+    "https://sidrhaus-create.github.io/si/assets/mobile-frames/frame-43.webp",
+    "https://sidrhaus-create.github.io/si/assets/mobile-frames/frame-44.webp",
+    "https://sidrhaus-create.github.io/si/assets/mobile-frames/frame-45.webp",
+    "https://sidrhaus-create.github.io/si/assets/mobile-frames/frame-46.webp",
+    "https://sidrhaus-create.github.io/si/assets/mobile-frames/frame-47.webp",
+    "https://sidrhaus-create.github.io/si/assets/mobile-frames/frame-48.webp"
+  ];
+  const mobileFramesQuery = matchMedia('(max-width: 768px)');
+  function pickFrames(){
+    return (mobileFramesQuery.matches && MOBILE_FRAMES.length) ? MOBILE_FRAMES : DESKTOP_FRAMES;
+  }
+  let FRAMES = pickFrames();
+  /* Режим отрисовки: cover — когда кадры соответствуют ориентации экрана,
+     contain — временный fallback: горизонтальные кадры на телефоне */
+  let usingMobileSet = FRAMES===MOBILE_FRAMES;
+  let FRAME_SEQUENCE = (mobile && !usingMobileSet)
     ? FRAMES.filter((_,i)=>i%2===0||i===FRAMES.length-1)
     : FRAMES;
   const canvas=document.getElementById('scrub');
   const ctx=canvas.getContext('2d',{alpha:false,desynchronized:true});
-  const imgs=new Array(FRAME_SEQUENCE.length);
+  let imgs=new Array(FRAME_SEQUENCE.length);
   let cw=0,ch=0,requestedFrame=0,lastDrawn=-1,canvasRAF=0;
+  function reselectFrames(){
+    const next=pickFrames();
+    if(next===FRAMES)return false;
+    FRAMES=next;
+    usingMobileSet=FRAMES===MOBILE_FRAMES;
+    FRAME_SEQUENCE=(mobile && !usingMobileSet)
+      ? FRAMES.filter((_,i)=>i%2===0||i===FRAMES.length-1)
+      : FRAMES;
+    imgs=new Array(FRAME_SEQUENCE.length);
+    requestedFrame=0;lastDrawn=-1;
+    [0,1,2].forEach(i=>{if(i<FRAME_SEQUENCE.length)loadFrame(i,'high');});
+    return true;
+  }
 
   function queueCanvas(){
     if(!canvasRAF)canvasRAF=requestAnimationFrame(()=>{
@@ -125,23 +210,18 @@ document.addEventListener('DOMContentLoaded',()=>{
     if(loadedIndex<0||loadedIndex===lastDrawn)return;
     const im=imgs[loadedIndex];
     const iw=im.naturalWidth, ih=im.naturalHeight;
-    /* 1. Фирменный фон */
+    /* Однотонный фирменный фон (виден только в contain-fallback) */
     ctx.fillStyle='#5D2F6A';
     ctx.fillRect(0,0,cw,ch);
-    /* 2. Ambient-подложка: тот же кадр cover-растяжкой с приглушением —
-       свободные зоны выглядят продолжением кадра, а не пустыми полосами */
-    const cov=Math.max(cw/iw,ch/ih);
-    ctx.globalAlpha=0.45;
-    ctx.drawImage(im,(cw-iw*cov)/2,(ch-ih*cov)/2,iw*cov,ih*cov);
-    ctx.globalAlpha=1;
-    ctx.fillStyle='rgba(93,47,106,.42)';
-    ctx.fillRect(0,0,cw,ch);
-    /* 3. Сам кадр: contain, по центру, без обрезки и растяжения */
-    const scale=Math.min(cw/iw,ch/ih);
+    /* cover — для вертикального мобильного набора 9:16 и для десктопа;
+       contain — только временный fallback: горизонтальные кадры на телефоне */
+    const fallbackContain = mobile && !usingMobileSet;
+    const scale = fallbackContain
+      ? Math.min(cw/iw,ch/ih)
+      : Math.max(cw/iw,ch/ih);
     const width=iw*scale,height=ih*scale;
     ctx.drawImage(im,(cw-width)/2,(ch-height)/2,width,height);
     lastDrawn=loadedIndex;
-    /* Мягкое проявление после первого реального кадра */
     if(!canvas.classList.contains('ready'))canvas.classList.add('ready');
   }
 
@@ -158,17 +238,24 @@ document.addEventListener('DOMContentLoaded',()=>{
   const spineFill=document.getElementById('spinefill');
   const progress=document.getElementById('progress');
   const backToTop=document.getElementById('backtotop');
-  const metrics={heroTop:0,heroHeight:0,heroRange:1,vh:0,pipeTop:0,pipeHeight:1,pageRange:1};
+  const metrics={heroTop:0,heroHeight:0,heroRange:1,vhStep:1,vh:0,pipeTop:0,pipeHeight:1,pageRange:1};
   const paraMetrics=paras.map(el=>({el,center:0,amt:parseFloat(el.dataset.para)||0.1}));
   let scrollRAF=0,measureRAF=0;
   function docTop(el){return scrollY+el.getBoundingClientRect().top;}
+  /* Стабильная высота экрана: не дёргается при скрытии адресной строки */
+  function setStableViewport(){
+    document.documentElement.style.setProperty('--stable-vh', window.innerHeight+'px');
+  }
+  setStableViewport();
   function measure(){
     measureRAF=0;
     resizeCanvas();
     queueCanvas();
     metrics.heroTop=docTop(hero);
     metrics.heroHeight=hero.offsetHeight;
-    metrics.heroRange=Math.max(1,metrics.heroHeight-innerHeight);
+    const stageH=stage?stage.offsetHeight:innerHeight;
+    metrics.heroRange=Math.max(1,metrics.heroHeight-stageH); /* ≈ 6 экранов */
+    metrics.vhStep=metrics.heroRange/6;                       /* точный шаг: 3 видео + 3 плашки */
     metrics.vh=innerHeight;
     metrics.pipeTop=pipe?docTop(pipe):0;
     metrics.pipeHeight=pipe?Math.max(1,pipe.offsetHeight):1;
@@ -183,8 +270,9 @@ document.addEventListener('DOMContentLoaded',()=>{
     scrollRAF=0;
     const y=window.scrollY;
     const vh=metrics.vh||window.innerHeight;
-    const heroY=Math.min(metrics.heroRange,Math.max(0,y-metrics.heroTop));
-    const totalProgress=Math.min(1,Math.max(0,heroY/metrics.heroRange));
+    /* relativeScroll: 0..6 «экранов» (пиксельные интервалы, без общего процента) */
+    const relativeScroll=Math.min(metrics.heroRange,Math.max(0,y-metrics.heroTop));
+    const step=metrics.vhStep;
 
     /* --- фолбэк сломанного sticky --- */
     if(stage){
@@ -199,14 +287,14 @@ document.addEventListener('DOMContentLoaded',()=>{
         else{stage.classList.remove('is-fixed');stage.classList.add('is-end');}
       }
     }
-    /* Видео: первая половина hero (3 экрана) — от первого до последнего кадра */
-    const videoProgress=Math.min(1,totalProgress/0.5);
-    const frameIndex=Math.round(videoProgress*(FRAME_SEQUENCE.length-1));
+    /* Этап видео: 0..3 экрана — от первого до последнего кадра.
+       При videoProgress=1 последний кадр отрисован и остаётся на canvas (мы его не очищаем). */
+    const videoProgress=Math.min(1,Math.max(0,relativeScroll/(3*step)));
+    const frameIndex=Math.min(FRAME_SEQUENCE.length-1,Math.round(videoProgress*(FRAME_SEQUENCE.length-1)));
     if(frameIndex!==requestedFrame){requestedFrame=frameIndex;queueCanvas();}
-    cue.classList.toggle('hide',totalProgress>0.02);
-    /* Плашки: вторая половина hero, по трети на каждую; последний кадр остаётся фоном */
-    const panelPhase=(totalProgress-0.5)/0.5;
-    const panelIndex=panelPhase<0?-1:Math.min(panels.length-1,Math.floor(panelPhase*panels.length));
+    cue.classList.toggle('hide',relativeScroll>step*0.06);
+    /* Плашки: экран 4 → первая (3..4), экран 5 → вторая (4..5), экран 6 → третья (5..6) */
+    const panelIndex=relativeScroll<3*step?-1:Math.min(panels.length-1,Math.floor((relativeScroll-3*step)/step));
     if(panelIndex!==activePanel){
       panels.forEach((pl,i)=>{
         const isActive=panelIndex>=0&&i===panelIndex;
@@ -353,15 +441,26 @@ document.addEventListener('DOMContentLoaded',()=>{
     });
   }
 
+  let resizeT=0;
+  function onViewportChange(){
+    setStableViewport();
+    if(reselectFrames())resizeCanvas();
+    queueMeasure();updateOzonSlide();
+  }
   window.addEventListener('resize',()=>{
     if(!mobileQuery.matches)setMenu(false);
-    queueMeasure();updateOzonSlide();
+    clearTimeout(resizeT);
+    resizeT=setTimeout(onViewportChange,200); /* debounce: не пересчитывать на каждый твик адресной строки */
   },{passive:true});
-  window.addEventListener('load',queueMeasure,{once:true});
-  window.addEventListener('orientationchange',queueMeasure,{passive:true});
+  window.addEventListener('load',()=>{setStableViewport();queueMeasure();},{once:true});
+  window.addEventListener('orientationchange',onViewportChange,{passive:true});
   if('ResizeObserver' in window&&hero){
     /* Tilda может отрисовать блок с задержкой — ловим смену размеров самого hero */
-    new ResizeObserver(queueMeasure).observe(hero);
+    let lastH=0;
+    new ResizeObserver(entries=>{
+      const h=entries[0].contentRect.height;
+      if(Math.abs(h-lastH)>4){lastH=h;queueMeasure();}
+    }).observe(hero);
   }
   /* Tilda может показать блок позже загрузки — подстраховочные замеры */
   [300,900,2200].forEach(t=>setTimeout(queueMeasure,t));
