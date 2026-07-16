@@ -38,7 +38,12 @@ document.addEventListener('DOMContentLoaded',()=>{
 
   /* Бегущая строка */
   const MQ='<span>0.0% алкоголя</span><span class="o">•</span><span>Настоящий сидровый вкус</span><span class="o">•</span><span>ГОСТ</span><span class="o">•</span><span>White Phoenix</span><span class="o">•</span><span>Сделано в России</span><span class="o">•</span>';
-  ['mq1','mq2'].forEach(id=>{const t=document.getElementById(id); if(t) t.innerHTML=MQ+MQ;});
+  ['mq1','mq2'].forEach(id=>{
+    const t=document.getElementById(id);
+    if(!t)return;
+    t.innerHTML=MQ+MQ+MQ+MQ; /* 4 копии — трек всегда шире экрана, шов на -50% бесшовный */
+    requestAnimationFrame(()=>t.classList.add('go'));
+  });
 
   /* Скролл-скраб: предзагруженные кадры высокого качества */
   const FRAMES = ["https://sidrhaus-create.github.io/si/assets/zerocider_asset_04_3cc9473f5b.webp","https://sidrhaus-create.github.io/si/assets/zerocider_asset_05_110b95d500.webp","https://sidrhaus-create.github.io/si/assets/zerocider_asset_06_0042483a6d.webp","https://sidrhaus-create.github.io/si/assets/zerocider_asset_07_7d883bb8d9.webp","https://sidrhaus-create.github.io/si/assets/zerocider_asset_08_74113ad742.webp","https://sidrhaus-create.github.io/si/assets/zerocider_asset_09_b8fe38f754.webp","https://sidrhaus-create.github.io/si/assets/zerocider_asset_10_316c70033b.webp","https://sidrhaus-create.github.io/si/assets/zerocider_asset_11_29124efd7d.webp","https://sidrhaus-create.github.io/si/assets/zerocider_asset_12_dacd47fe05.webp","https://sidrhaus-create.github.io/si/assets/zerocider_asset_13_a85cd989fa.webp","https://sidrhaus-create.github.io/si/assets/zerocider_asset_14_a6b37278fe.webp","https://sidrhaus-create.github.io/si/assets/zerocider_asset_15_13a2cd2bd3.webp","https://sidrhaus-create.github.io/si/assets/zerocider_asset_16_8e95e9431e.webp","https://sidrhaus-create.github.io/si/assets/zerocider_asset_17_82c1fd5af2.webp","https://sidrhaus-create.github.io/si/assets/zerocider_asset_18_7f91864136.webp","https://sidrhaus-create.github.io/si/assets/zerocider_asset_19_3da363a942.webp","https://sidrhaus-create.github.io/si/assets/zerocider_asset_20_2e467b653c.webp","https://sidrhaus-create.github.io/si/assets/zerocider_asset_21_0857dc7afd.webp","https://sidrhaus-create.github.io/si/assets/zerocider_asset_22_a5f134ace7.webp","https://sidrhaus-create.github.io/si/assets/zerocider_asset_23_46e5e44eb2.webp","https://sidrhaus-create.github.io/si/assets/zerocider_asset_24_9970f2717c.webp","https://sidrhaus-create.github.io/si/assets/zerocider_asset_25_918a64e7fe.webp","https://sidrhaus-create.github.io/si/assets/zerocider_asset_26_283b29d32d.webp","https://sidrhaus-create.github.io/si/assets/zerocider_asset_27_d6b109955a.webp","https://sidrhaus-create.github.io/si/assets/zerocider_asset_28_1f98f3be77.webp","https://sidrhaus-create.github.io/si/assets/zerocider_asset_29_e14c4dcfff.webp","https://sidrhaus-create.github.io/si/assets/zerocider_asset_30_59f773ef2d.webp","https://sidrhaus-create.github.io/si/assets/zerocider_asset_31_97b4d35409.webp","https://sidrhaus-create.github.io/si/assets/zerocider_asset_32_258a1b6b3f.webp","https://sidrhaus-create.github.io/si/assets/zerocider_asset_33_9944ff48c8.webp","https://sidrhaus-create.github.io/si/assets/zerocider_asset_34_0131310e38.webp","https://sidrhaus-create.github.io/si/assets/zerocider_asset_35_ada020edac.webp","https://sidrhaus-create.github.io/si/assets/zerocider_asset_36_c52f45b74c.webp","https://sidrhaus-create.github.io/si/assets/zerocider_asset_37_c6911efaa7.webp","https://sidrhaus-create.github.io/si/assets/zerocider_asset_38_37eeee3c6d.webp","https://sidrhaus-create.github.io/si/assets/zerocider_asset_39_b7b99c04f1.webp","https://sidrhaus-create.github.io/si/assets/zerocider_asset_40_d43dd9ba55.webp","https://sidrhaus-create.github.io/si/assets/zerocider_asset_41_4fc4190631.webp","https://sidrhaus-create.github.io/si/assets/zerocider_asset_42_20f04c766c.webp","https://sidrhaus-create.github.io/si/assets/zerocider_asset_43_0a5cfb9fb6.webp","https://sidrhaus-create.github.io/si/assets/zerocider_asset_44_6fdac8774f.webp","https://sidrhaus-create.github.io/si/assets/zerocider_asset_45_97c7008e46.webp","https://sidrhaus-create.github.io/si/assets/zerocider_asset_46_42061d4026.webp","https://sidrhaus-create.github.io/si/assets/zerocider_asset_47_c7fed475b5.webp","https://sidrhaus-create.github.io/si/assets/zerocider_asset_48_031d8ff843.webp","https://sidrhaus-create.github.io/si/assets/zerocider_asset_49_4d716a4f63.webp","https://sidrhaus-create.github.io/si/assets/zerocider_asset_50_e068148b50.webp","https://sidrhaus-create.github.io/si/assets/zerocider_asset_51_86a0038d0e.webp","https://sidrhaus-create.github.io/si/assets/zerocider_asset_52_0dabf6b71f.webp"];
@@ -119,13 +124,25 @@ document.addEventListener('DOMContentLoaded',()=>{
     const loadedIndex=findLoadedFrame(i);
     if(loadedIndex<0||loadedIndex===lastDrawn)return;
     const im=imgs[loadedIndex];
-    /* cover: видео заполняет весь экран (на мобильном вертикальном — кадрируется по бокам) */
-    const scale=Math.max(cw/im.naturalWidth,ch/im.naturalHeight);
-    const width=im.naturalWidth*scale,height=im.naturalHeight*scale;
+    const iw=im.naturalWidth, ih=im.naturalHeight;
+    /* 1. Фирменный фон */
     ctx.fillStyle='#5D2F6A';
     ctx.fillRect(0,0,cw,ch);
+    /* 2. Ambient-подложка: тот же кадр cover-растяжкой с приглушением —
+       свободные зоны выглядят продолжением кадра, а не пустыми полосами */
+    const cov=Math.max(cw/iw,ch/ih);
+    ctx.globalAlpha=0.45;
+    ctx.drawImage(im,(cw-iw*cov)/2,(ch-ih*cov)/2,iw*cov,ih*cov);
+    ctx.globalAlpha=1;
+    ctx.fillStyle='rgba(93,47,106,.42)';
+    ctx.fillRect(0,0,cw,ch);
+    /* 3. Сам кадр: contain, по центру, без обрезки и растяжения */
+    const scale=Math.min(cw/iw,ch/ih);
+    const width=iw*scale,height=ih*scale;
     ctx.drawImage(im,(cw-width)/2,(ch-height)/2,width,height);
     lastDrawn=loadedIndex;
+    /* Мягкое проявление после первого реального кадра */
+    if(!canvas.classList.contains('ready'))canvas.classList.add('ready');
   }
 
   /* Прогресс героя + зоны плашек */
@@ -141,7 +158,7 @@ document.addEventListener('DOMContentLoaded',()=>{
   const spineFill=document.getElementById('spinefill');
   const progress=document.getElementById('progress');
   const backToTop=document.getElementById('backtotop');
-  const metrics={heroTop:0,heroHeight:0,heroRange:1,videoDistance:1,panelStep:1,pipeTop:0,pipeHeight:1,pageRange:1};
+  const metrics={heroTop:0,heroHeight:0,heroRange:1,vh:0,pipeTop:0,pipeHeight:1,pageRange:1};
   const paraMetrics=paras.map(el=>({el,center:0,amt:parseFloat(el.dataset.para)||0.1}));
   let scrollRAF=0,measureRAF=0;
   function docTop(el){return scrollY+el.getBoundingClientRect().top;}
@@ -152,8 +169,7 @@ document.addEventListener('DOMContentLoaded',()=>{
     metrics.heroTop=docTop(hero);
     metrics.heroHeight=hero.offsetHeight;
     metrics.heroRange=Math.max(1,metrics.heroHeight-innerHeight);
-    metrics.videoDistance=innerHeight*(mobile?2.2:3);
-    metrics.panelStep=innerHeight*(mobile?0.8:1);
+    metrics.vh=innerHeight;
     metrics.pipeTop=pipe?docTop(pipe):0;
     metrics.pipeHeight=pipe?Math.max(1,pipe.offsetHeight):1;
     metrics.pageRange=Math.max(1,document.documentElement.scrollHeight-innerHeight);
@@ -166,8 +182,9 @@ document.addEventListener('DOMContentLoaded',()=>{
   function updateScroll(){
     scrollRAF=0;
     const y=window.scrollY;
-    const vh=window.innerHeight;
+    const vh=metrics.vh||window.innerHeight;
     const heroY=Math.min(metrics.heroRange,Math.max(0,y-metrics.heroTop));
+    const totalProgress=Math.min(1,Math.max(0,heroY/metrics.heroRange));
 
     /* --- фолбэк сломанного sticky --- */
     if(stage){
@@ -182,12 +199,14 @@ document.addEventListener('DOMContentLoaded',()=>{
         else{stage.classList.remove('is-fixed');stage.classList.add('is-end');}
       }
     }
-    const videoProgress=Math.min(1,Math.max(0,heroY/metrics.videoDistance));
+    /* Видео: первая половина hero (3 экрана) — от первого до последнего кадра */
+    const videoProgress=Math.min(1,totalProgress/0.5);
     const frameIndex=Math.round(videoProgress*(FRAME_SEQUENCE.length-1));
     if(frameIndex!==requestedFrame){requestedFrame=frameIndex;queueCanvas();}
-    cue.classList.toggle('hide',heroY>vh*.04);
-    const panelY=heroY-metrics.videoDistance;
-    const panelIndex=panelY<0?-1:Math.min(panels.length-1,Math.floor(panelY/metrics.panelStep));
+    cue.classList.toggle('hide',totalProgress>0.02);
+    /* Плашки: вторая половина hero, по трети на каждую; последний кадр остаётся фоном */
+    const panelPhase=(totalProgress-0.5)/0.5;
+    const panelIndex=panelPhase<0?-1:Math.min(panels.length-1,Math.floor(panelPhase*panels.length));
     if(panelIndex!==activePanel){
       panels.forEach((pl,i)=>{
         const isActive=panelIndex>=0&&i===panelIndex;
@@ -340,11 +359,9 @@ document.addEventListener('DOMContentLoaded',()=>{
   },{passive:true});
   window.addEventListener('load',queueMeasure,{once:true});
   window.addEventListener('orientationchange',queueMeasure,{passive:true});
-  if(window.visualViewport)visualViewport.addEventListener('resize',queueMeasure,{passive:true});
-  if('ResizeObserver' in window){
-    const ro=new ResizeObserver(queueMeasure);
-    ro.observe(document.body);
-    if(hero)ro.observe(hero);
+  if('ResizeObserver' in window&&hero){
+    /* Tilda может отрисовать блок с задержкой — ловим смену размеров самого hero */
+    new ResizeObserver(queueMeasure).observe(hero);
   }
   /* Tilda может показать блок позже загрузки — подстраховочные замеры */
   [300,900,2200].forEach(t=>setTimeout(queueMeasure,t));

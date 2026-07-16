@@ -29,11 +29,12 @@
   --stroke-hi:rgba(255,255,255,.5);
 }
 *{margin:0;padding:0;box-sizing:border-box}
-html{scroll-behavior:smooth;overflow-x:clip}
+html{scroll-behavior:smooth}
+html,body{overflow-x:clip;overflow-y:auto;touch-action:pan-y;overscroll-behavior-x:none}
 body{
   font-family:var(--f-body);font-weight:500;
   background:linear-gradient(180deg,#241028 0%,#3B1943 48%,#241028 100%);color:var(--white);
-  overflow-x:clip;line-height:1.55;
+  line-height:1.55;
   -webkit-font-smoothing:antialiased;
 }
 body.menu-open{overflow:hidden;overscroll-behavior:none;touch-action:none}
@@ -73,12 +74,17 @@ a{color:inherit;text-decoration:none}
   transform-origin:center;transition:transform .3s ease,opacity .25s ease,background .25s ease}
 
 /* ============ HERO ============ */
-#hero{height:700vh;height:700svh;position:relative}
-.stage{position:sticky;top:0;height:100vh;height:100svh;overflow:hidden;background:#5D2F6A}
+#hero{position:relative;height:600vh;height:600svh;height:600dvh}
+.stage{position:sticky;top:0;width:100%;height:100vh;height:100dvh;min-height:100svh;overflow:hidden;background:#5D2F6A}
 /* Фолбэк: если sticky сломан обёрткой Tilda, JS пинит сцену через fixed */
 .stage.is-fixed{position:fixed;top:0;left:0;right:0;z-index:5}
 .stage.is-end{position:absolute;top:auto;bottom:0;left:0;right:0}
-#scrub,#scrubvid{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;pointer-events:none}
+#scrub,#scrubvid{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;
+  opacity:0;transition:opacity .5s ease}
+#scrub.ready{opacity:1}
+/* Лёгкий фирменный оверлей — соединяет кадр с фоном сайта */
+.stage:after{content:'';position:absolute;inset:0;z-index:1;pointer-events:none;
+  background:linear-gradient(180deg, rgba(93,47,106,.20) 0%, rgba(36,16,40,.06) 45%, rgba(36,16,40,.38) 100%)}
 #scrubvid{opacity:0;pointer-events:none;position:absolute;width:1px;height:1px;top:-9999px}
 
 /* Плашки героя — плотные, читабельные */
@@ -124,7 +130,9 @@ a{color:inherit;text-decoration:none}
 /* ============ БЕГУЩАЯ СТРОКА ============ */
 .marquee{background:var(--purple);border-top:1px solid var(--stroke);border-bottom:1px solid var(--stroke);
   overflow:hidden;padding:14px 0;position:relative;z-index:3}
-.marquee .track{display:flex;width:max-content;animation:mq 26s linear infinite;gap:0;will-change:transform}
+.marquee .track{display:flex;width:max-content;gap:0;will-change:transform}
+.marquee .track.go{animation:mq 30s linear infinite}
+.marquee .track span{white-space:nowrap}
 .marquee span{font-family:var(--f-caps);text-transform:uppercase;letter-spacing:.28em;font-size:12.5px;
   white-space:nowrap;padding:0 22px;color:var(--white)}
 .marquee span.o{color:var(--lilac-soft);opacity:.7}
@@ -388,8 +396,6 @@ footer li a:hover{opacity:1;text-decoration:underline}
   body.menu-open #nav{background:rgba(93,47,106,.9);box-shadow:0 1px 0 rgba(255,255,255,.12);
     backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px)}
   body.menu-open #backtotop{opacity:0;pointer-events:none}
-  /* Короче путь скролла на мобильном: 2.2 экрана видео + 3 плашки по 0.8 экрана */
-  #hero{height:560vh;height:560svh}
   /* Плашки: убираем дорогой blur на мобильных, компенсируем плотностью фона */
   .panel{backdrop-filter:none;-webkit-backdrop-filter:none;
     background:linear-gradient(160deg, rgba(93,47,106,.97) 0%, rgba(59,25,67,.97) 55%, rgba(36,16,40,.98) 100%)}
