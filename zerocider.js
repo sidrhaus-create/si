@@ -75,13 +75,13 @@ document.addEventListener('DOMContentLoaded',()=>{
   let preloadCursor=Math.min(3,FRAME_SEQUENCE.length);
   function schedulePreload(){
     if(preloadCursor>=FRAME_SEQUENCE.length)return;
-    if('requestIdleCallback' in window)requestIdleCallback(preloadBatch,{timeout:1000});
-    else setTimeout(()=>preloadBatch(),140);
+    if('requestIdleCallback' in window)requestIdleCallback(preloadBatch,{timeout:700});
+    else setTimeout(()=>preloadBatch(),120);
   }
   function preloadBatch(deadline){
     let count=0;
-    while(preloadCursor<FRAME_SEQUENCE.length&&count<3&&
-      (!deadline||deadline.didTimeout||deadline.timeRemaining()>4)){
+    while(preloadCursor<FRAME_SEQUENCE.length&&count<4&&
+      (!deadline||deadline.didTimeout||deadline.timeRemaining()>3)){
       loadFrame(preloadCursor,'low');preloadCursor++;count++;
     }
     schedulePreload();
@@ -114,10 +114,13 @@ document.addEventListener('DOMContentLoaded',()=>{
   function drawFrame(frameIndex){
     const i=Math.max(0,Math.min(FRAME_SEQUENCE.length-1,Math.round(frameIndex)));
     loadFrame(i,'high');
+    if(i+1<FRAME_SEQUENCE.length)loadFrame(i+1,'high');
+    if(i+2<FRAME_SEQUENCE.length)loadFrame(i+2,'auto');
     const loadedIndex=findLoadedFrame(i);
     if(loadedIndex<0||loadedIndex===lastDrawn)return;
     const im=imgs[loadedIndex];
-    const scale=Math.min(cw/im.naturalWidth,ch/im.naturalHeight);
+    /* cover: видео заполняет весь экран (на мобильном вертикальном — кадрируется по бокам) */
+    const scale=Math.max(cw/im.naturalWidth,ch/im.naturalHeight);
     const width=im.naturalWidth*scale,height=im.naturalHeight*scale;
     ctx.fillStyle='#5D2F6A';
     ctx.fillRect(0,0,cw,ch);
@@ -127,6 +130,9 @@ document.addEventListener('DOMContentLoaded',()=>{
 
   /* Прогресс героя + зоны плашек */
   const hero=document.getElementById('hero');
+  const stage=hero?hero.querySelector('.stage'):null;
+  /* Если предок в Tilda имеет overflow — position:sticky не работает; детектируем и включаем fixed-фолбэк */
+  let stickyBroken=false,stickyChecks=30;
   const panels=[...document.querySelectorAll('.panel')];
   let activePanel=null;
   const cue=document.getElementById('cue');
@@ -146,8 +152,8 @@ document.addEventListener('DOMContentLoaded',()=>{
     metrics.heroTop=docTop(hero);
     metrics.heroHeight=hero.offsetHeight;
     metrics.heroRange=Math.max(1,metrics.heroHeight-innerHeight);
-    metrics.videoDistance=innerHeight*3;
-    metrics.panelStep=innerHeight;
+    metrics.videoDistance=innerHeight*(mobile?2.2:3);
+    metrics.panelStep=innerHeight*(mobile?0.8:1);
     metrics.pipeTop=pipe?docTop(pipe):0;
     metrics.pipeHeight=pipe?Math.max(1,pipe.offsetHeight):1;
     metrics.pageRange=Math.max(1,document.documentElement.scrollHeight-innerHeight);
@@ -162,6 +168,20 @@ document.addEventListener('DOMContentLoaded',()=>{
     const y=window.scrollY;
     const vh=window.innerHeight;
     const heroY=Math.min(metrics.heroRange,Math.max(0,y-metrics.heroTop));
+
+    /* --- фолбэк сломанного sticky --- */
+    if(stage){
+      if(!stickyBroken&&stickyChecks>0&&y>metrics.heroTop+8&&y<metrics.heroTop+metrics.heroRange-8){
+        stickyChecks--;
+        const st=stage.getBoundingClientRect().top;
+        if(st<-6||st>6){stickyBroken=true;}
+      }
+      if(stickyBroken){
+        if(y<metrics.heroTop){stage.classList.remove('is-fixed','is-end');}
+        else if(y<metrics.heroTop+metrics.heroRange){stage.classList.add('is-fixed');stage.classList.remove('is-end');}
+        else{stage.classList.remove('is-fixed');stage.classList.add('is-end');}
+      }
+    }
     const videoProgress=Math.min(1,Math.max(0,heroY/metrics.videoDistance));
     const frameIndex=Math.round(videoProgress*(FRAME_SEQUENCE.length-1));
     if(frameIndex!==requestedFrame){requestedFrame=frameIndex;queueCanvas();}
@@ -319,6 +339,15 @@ document.addEventListener('DOMContentLoaded',()=>{
     queueMeasure();updateOzonSlide();
   },{passive:true});
   window.addEventListener('load',queueMeasure,{once:true});
+  window.addEventListener('orientationchange',queueMeasure,{passive:true});
+  if(window.visualViewport)visualViewport.addEventListener('resize',queueMeasure,{passive:true});
+  if('ResizeObserver' in window){
+    const ro=new ResizeObserver(queueMeasure);
+    ro.observe(document.body);
+    if(hero)ro.observe(hero);
+  }
+  /* Tilda может показать блок позже загрузки — подстраховочные замеры */
+  [300,900,2200].forEach(t=>setTimeout(queueMeasure,t));
   if(document.fonts?.ready)document.fonts.ready.then(queueMeasure);
   queueMeasure();
 });
