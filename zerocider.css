@@ -74,7 +74,7 @@ a{color:inherit;text-decoration:none}
   transform-origin:center;transition:transform .3s ease,opacity .25s ease,background .25s ease}
 
 /* ============ HERO ============ */
-#hero{position:relative;height:700vh;height:calc(var(--stable-vh, 100svh) * 7)}
+#hero{position:relative;height:400vh;height:calc(var(--stable-vh, 100svh) * 4)}
 .stage{position:sticky;top:0;width:100%;
   height:100vh;height:var(--stable-vh, 100svh);min-height:100svh;
   overflow:hidden;background:#5D2F6A}
@@ -90,8 +90,8 @@ a{color:inherit;text-decoration:none}
 #scrubvid{opacity:0;pointer-events:none;position:absolute;width:1px;height:1px;top:-9999px}
 
 /* Плашки героя — плотные, читабельные */
-.panel{position:absolute;z-index:6;left:50%;bottom:calc(30px + env(safe-area-inset-bottom));
-  transform:translate3d(-56%,26px,0) scale(.97);
+.panel{position:absolute;z-index:6;left:50%;top:50%;bottom:auto;
+  transform:translate3d(-56%,-42%,0) scale(.97);
   width:min(560px, calc(100% - 28px));
   background:var(--plate);
   border:1px solid var(--stroke);border-radius:var(--r);
@@ -103,11 +103,11 @@ a{color:inherit;text-decoration:none}
   opacity:0;pointer-events:none;
   transition:opacity .5s ease,transform .5s ease}
 .panel.is-active{opacity:1;pointer-events:auto;will-change:transform,opacity;
-  transform:translate3d(-50%,0,0) scale(1)}
+  transform:translate3d(-50%,-50%,0) scale(1)}
 .panel.is-past{opacity:0;pointer-events:none;
-  transform:translate3d(calc(-50% + 105vw),0,0) scale(.96)}
+  transform:translate3d(calc(-50% + 105vw),-50%,0) scale(.96)}
 .panel.is-next{opacity:0;pointer-events:none;
-  transform:translate3d(-56%,26px,0) scale(.97)}
+  transform:translate3d(-56%,-42%,0) scale(.97)}
 .panel h1{font-family:var(--f-head);font-weight:800;font-size:clamp(30px,7.4vw,52px);line-height:1.04;letter-spacing:.01em}
 .panel h2{font-family:var(--f-head);font-weight:800;font-size:clamp(23px,5.6vw,36px);line-height:1.12}
 .panel .script{font-family:var(--f-script);font-size:clamp(24px,5.4vw,34px);color:var(--lilac);line-height:1.1;margin-top:8px;display:block}
@@ -159,13 +159,15 @@ section.blk{position:relative;padding:clamp(66px,11vw,130px) clamp(18px,5vw,64px
   radial-gradient(80% 60% at 20% 10%, rgba(107,48,119,.55), transparent 60%),
   radial-gradient(70% 60% at 90% 90%, rgba(107,48,119,.4), transparent 60%),
   linear-gradient(180deg, #241028 0%, #3B1943 48%, #3B1943 100%)}
-.feats{display:grid;grid-template-columns:repeat(auto-fit,minmax(235px,1fr));gap:14px;margin-top:clamp(28px,5vw,52px)}
+.feats{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;margin-top:clamp(28px,5vw,52px)}
 .feat{background:var(--plate);border:1px solid var(--stroke);border-radius:var(--r);
-  padding:24px 22px;position:relative;overflow:hidden;transition:transform .35s,border-color .35s,box-shadow .35s}
+  min-height:clamp(132px,16vw,182px);padding:clamp(22px,3.4vw,38px);position:relative;overflow:hidden;
+  display:flex;align-items:flex-end;transition:transform .35s,border-color .35s,box-shadow .35s}
 .feat:hover{transform:translateY(-6px);border-color:var(--stroke-hi);box-shadow:0 20px 50px rgba(107,48,119,.4)}
 .feat .n{font-family:var(--f-head);font-weight:800;font-size:15px;color:var(--purple);
-  width:34px;height:34px;border-radius:50%;background:var(--white);display:grid;place-items:center;margin-bottom:14px}
-.feat h3{font-family:var(--f-head);font-weight:700;font-size:18.5px;line-height:1.25;margin-bottom:8px}
+  position:absolute;top:18px;right:18px;width:auto;height:auto;background:none;color:rgba(255,255,255,.54);
+  display:block;margin:0;letter-spacing:.12em}
+.feat h3{font-family:var(--f-head);font-weight:800;font-size:clamp(20px,3vw,34px);line-height:1.08;margin:0;max-width:14ch}
 .feat p{font-size:14.5px;color:var(--lilac-soft)}
 .feat .wm{position:absolute;right:-14px;bottom:-22px;font-family:var(--f-head);font-weight:800;font-size:110px;
   color:rgba(255,255,255,.045);text-shadow:0 0 22px rgba(139,74,156,.08);line-height:1}
@@ -212,19 +214,11 @@ section.blk{position:relative;padding:clamp(66px,11vw,130px) clamp(18px,5vw,64px
 .flavor .ideal b{font-family:var(--f-caps);text-transform:uppercase;letter-spacing:.18em;font-size:10.5px;display:block;color:var(--lilac);margin-bottom:4px}
 .flavor .script{font-family:var(--f-script);font-size:clamp(24px,5vw,32px);color:var(--lilac);margin-top:16px;display:block}
 .flavor .art{position:relative;z-index:2;display:grid;place-items:center}
-.plate-card{
-  background:linear-gradient(160deg,#FFFFFF 0%,rgba(255,255,255,.92) 58%,rgba(139,74,156,.18) 100%);
-  border-radius:26px;padding:clamp(24px,4vw,44px) clamp(20px,3vw,40px);
-  display:grid;place-items:center;position:relative;width:min(360px,100%);
-  box-shadow:0 30px 70px rgba(107,48,119,.55),
-             inset 0 0 0 1px rgba(107,48,119,.15);
-  transform-style:preserve-3d;transition:transform .25s ease}
-.plate-card:before{content:'0.0%';position:absolute;top:14px;left:18px;font-family:var(--f-head);font-weight:800;
-  font-size:14px;color:var(--purple);letter-spacing:.04em}
-.plate-card:after{content:'ZER° CIDER';position:absolute;bottom:12px;right:18px;font-family:var(--f-caps);
-  text-transform:uppercase;letter-spacing:.24em;font-size:10px;color:var(--purple)}
-.plate-card img{height:clamp(250px,36vw,380px);width:auto;
-  filter:drop-shadow(0 22px 26px rgba(59,25,67,.35))}
+.bottle-only{display:grid;place-items:center;position:relative;width:min(390px,100%);min-height:clamp(300px,42vw,470px)}
+.bottle-only:after{content:'';position:absolute;z-index:-1;left:50%;bottom:6%;width:72%;height:18%;
+  transform:translateX(-50%);border-radius:50%;background:rgba(36,16,40,.46);filter:blur(18px)}
+.bottle-only img{height:clamp(300px,42vw,460px);width:auto;max-width:100%;object-fit:contain;
+  filter:drop-shadow(0 24px 30px rgba(36,16,40,.5))}
 .flavor.alt .txt{order:2}
 .flavor.alt .art{order:1}
 
@@ -306,6 +300,23 @@ section.blk{position:relative;padding:clamp(66px,11vw,130px) clamp(18px,5vw,64px
 @keyframes phoenix-forward{to{opacity:1;transform:translateX(clamp(42px,11vw,110px)) rotate(4deg)}}
 @keyframes trail-forward{50%{transform:scaleX(1);opacity:1}to{transform:translateX(36px) scaleX(.7);opacity:.16}}
 
+/* ============ ПАРТНЁРЫ ============ */
+#partners{background:
+  radial-gradient(72% 84% at 8% 50%,rgba(139,74,156,.25),transparent 68%),
+  linear-gradient(180deg,#3B1943 0%,#241028 100%);padding-inline:0}
+#partners .wrap{padding-inline:clamp(18px,5vw,64px)}
+.partners-marquee{margin-top:clamp(30px,5vw,54px);overflow:hidden;border-block:1px solid var(--stroke);
+  background:rgba(93,47,106,.46);padding:18px 0}
+.partners-track{display:flex;width:max-content;will-change:transform;animation:partners-scroll 28s linear infinite}
+.partners-group{display:flex;align-items:center;gap:14px;padding-right:14px;flex:none}
+.partner-slot{width:clamp(154px,18vw,230px);height:96px;display:grid;place-items:center;flex:none;
+  border:1px dashed rgba(255,255,255,.3);border-radius:18px;background:rgba(255,255,255,.055);
+  color:rgba(255,255,255,.62);font-family:var(--f-caps);font-size:10px;text-transform:uppercase;
+  letter-spacing:.16em;text-align:center;padding:14px}
+.partner-slot img{width:auto;height:52px;max-width:82%;object-fit:contain;filter:grayscale(1) brightness(0) invert(1);opacity:.84}
+.partners-marquee:hover .partners-track{animation-play-state:paused}
+@keyframes partners-scroll{to{transform:translate3d(-50%,0,0)}}
+
 /* ============ ГДЕ КУПИТЬ ============ */
 #gde-kupit{background:
   radial-gradient(70% 70% at 100% 100%,rgba(139,74,156,.42),transparent 64%),
@@ -345,6 +356,26 @@ section.blk{position:relative;padding:clamp(66px,11vw,130px) clamp(18px,5vw,64px
 .ozon-dot.active{background:#FFFFFF;transform:scaleX(1)}
 @media(hover:hover){.ozon-card:hover .ozon-media img{transform:translate3d(0,-7px,0) scale(1.025)}}
 @media(min-width:901px){.ozon-arrows,.ozon-dots{display:none}}
+.marketplace-card{position:relative;overflow:hidden}
+.marketplace-name{min-height:40px;display:flex;align-items:center;font-family:var(--f-head);font-size:clamp(24px,3vw,34px);
+  font-weight:900;line-height:1;letter-spacing:-.04em;margin:4px 4px 14px}
+.marketplace-ozon .marketplace-name{color:#005BFF}
+.marketplace-wb .marketplace-name{color:#A100FF}
+.marketplace-lavka .marketplace-name{color:#241028}
+.marketplace-lavka .marketplace-name span{display:grid;place-items:center;width:34px;height:34px;margin-right:9px;
+  border-radius:10px;background:#FC3F1D;color:#FFFFFF;font-size:23px}
+.marketplace-bottles{position:relative;display:block;min-height:310px;isolation:isolate}
+.marketplace-bottles .market-bottle{position:absolute;bottom:2px;width:auto;height:282px;max-width:none;object-fit:contain;
+  filter:drop-shadow(0 16px 18px rgba(59,25,67,.23));transition:transform .3s ease}
+.marketplace-bottles .market-bottle-left{left:50%;z-index:1;transform:translateX(-80%) rotate(-7deg) scale(.9)}
+.marketplace-bottles .market-bottle-center{left:50%;z-index:3;transform:translateX(-50%) scale(1.04)}
+.marketplace-bottles .market-bottle-right{left:50%;z-index:2;transform:translateX(-20%) rotate(7deg) scale(.9)}
+.marketplace-card:hover .marketplace-bottles .market-bottle-left{transform:translateX(-83%) rotate(-9deg) scale(.92)}
+.marketplace-card:hover .marketplace-bottles .market-bottle-center{transform:translateX(-50%) translateY(-7px) scale(1.06)}
+.marketplace-card:hover .marketplace-bottles .market-bottle-right{transform:translateX(-17%) rotate(9deg) scale(.92)}
+.marketplace-wb .marketplace-btn{background:linear-gradient(90deg,#CB11AB,#A100FF);box-shadow:0 11px 24px rgba(203,17,171,.24)}
+.marketplace-lavka .marketplace-btn{background:#FC3F1D;box-shadow:0 11px 24px rgba(252,63,29,.22)}
+.marketplace-btn.is-unavailable{background:#D8D4DA;color:#5F5862;box-shadow:none;cursor:not-allowed;user-select:none}
 
 /* ============ ФУТЕР ============ */
 footer{background:rgba(93,47,106,.9);
@@ -400,6 +431,7 @@ footer li a:hover{opacity:1;text-decoration:underline}
   body.menu-open #backtotop{opacity:0;pointer-events:none}
   /* Плашки: убираем дорогой blur на мобильных, компенсируем плотностью фона */
   .panel{backdrop-filter:none;-webkit-backdrop-filter:none;
+    top:calc(50% + 24px);
     background:linear-gradient(160deg, rgba(93,47,106,.97) 0%, rgba(59,25,67,.97) 55%, rgba(36,16,40,.98) 100%)}
   .flavor{grid-template-columns:1fr;gap:22px}
   .flavor.alt .txt{order:1}.flavor.alt .art{order:2}
@@ -413,10 +445,10 @@ footer li a:hover{opacity:1;text-decoration:underline}
   #nav.solid .logo svg,#nav.solid .logo img{height:35px}
   .panel{padding:19px 18px 20px}
   .feats{grid-template-columns:1fr 1fr;gap:10px}
-  .feat{padding:17px 14px}
-  .feat h3{font-size:15px}
+  .feat{min-height:124px;padding:18px 14px}
+  .feat h3{font-size:16px}
   .feat p{font-size:12.8px}
-  .feat .n{width:29px;height:29px;font-size:13px;margin-bottom:10px}
+  .feat .n{top:12px;right:12px;font-size:11px}
   .bottles{display:block;min-height:clamp(300px,92vw,380px)}
   .bottle-slot{position:absolute;left:50%;bottom:0;height:clamp(250px,78vw,330px);margin:0}
   .bottle-center{height:clamp(275px,86vw,360px)}
@@ -432,6 +464,8 @@ footer li a:hover{opacity:1;text-decoration:underline}
   .ozon-card{flex-basis:min(84vw,330px)}
   .ozon-media{min-height:284px}
   .ozon-media img{height:274px}
+  .marketplace-bottles .market-bottle{height:258px}
+  .partner-slot{width:148px;height:82px}
   #backtotop{width:46px;height:46px}
   .pipe{--padx:19px}
   .step{padding-left:calc(var(--padx) + 33px);padding-bottom:44px}
@@ -450,8 +484,9 @@ footer li a:hover{opacity:1;text-decoration:underline}
   .phoenix-flight img{opacity:1;transform:translateX(42px) rotate(0)}
   .phoenix-trail{display:none}
   .panel{transition:none}
-  .panel.is-active{opacity:1;transform:translate3d(-50%,0,0) scale(1)}
-  .panel.is-past{opacity:0;transform:translate3d(calc(-50% + 105vw),0,0) scale(.96)}
-  .panel.is-next{opacity:0;transform:translate3d(-56%,26px,0) scale(.97)}
+  .panel.is-active{opacity:1;transform:translate3d(-50%,-50%,0) scale(1)}
+  .panel.is-past{opacity:0;transform:translate3d(calc(-50% + 105vw),-50%,0) scale(.96)}
+  .panel.is-next{opacity:0;transform:translate3d(-56%,-42%,0) scale(.97)}
   .ozon-track{scroll-behavior:auto}
+  .partners-track{animation:none;transform:none}
 }

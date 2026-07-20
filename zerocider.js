@@ -254,8 +254,8 @@ document.addEventListener('DOMContentLoaded',()=>{
     metrics.heroTop=docTop(hero);
     metrics.heroHeight=hero.offsetHeight;
     const stageH=stage?stage.offsetHeight:innerHeight;
-    metrics.heroRange=Math.max(1,metrics.heroHeight-stageH); /* ≈ 6 экранов */
-    metrics.vhStep=metrics.heroRange/6;                       /* точный шаг: 3 видео + 3 плашки */
+    metrics.heroRange=Math.max(1,metrics.heroHeight-stageH); /* CSS даёт ≈ 3 экрана реального скролла */
+    metrics.vhStep=metrics.heroRange/6;                       /* 6 логических шагов по 0,5 экрана: 3 видео + 3 плашки */
     metrics.vh=innerHeight;
     metrics.pipeTop=pipe?docTop(pipe):0;
     metrics.pipeHeight=pipe?Math.max(1,pipe.offsetHeight):1;
@@ -270,7 +270,7 @@ document.addEventListener('DOMContentLoaded',()=>{
     scrollRAF=0;
     const y=window.scrollY;
     const vh=metrics.vh||window.innerHeight;
-    /* relativeScroll: 0..6 «экранов» (пиксельные интервалы, без общего процента) */
+    /* relativeScroll: 0..6 логических шагов; один шаг равен половине viewport */
     const relativeScroll=Math.min(metrics.heroRange,Math.max(0,y-metrics.heroTop));
     const step=metrics.vhStep;
 
@@ -287,13 +287,13 @@ document.addEventListener('DOMContentLoaded',()=>{
         else{stage.classList.remove('is-fixed');stage.classList.add('is-end');}
       }
     }
-    /* Этап видео: 0..3 экрана — от первого до последнего кадра.
+    /* Этап видео: 0..3 логических шага (≈ 1,5 viewport) — от первого до последнего кадра.
        При videoProgress=1 последний кадр отрисован и остаётся на canvas (мы его не очищаем). */
     const videoProgress=Math.min(1,Math.max(0,relativeScroll/(3*step)));
     const frameIndex=Math.min(FRAME_SEQUENCE.length-1,Math.round(videoProgress*(FRAME_SEQUENCE.length-1)));
     if(frameIndex!==requestedFrame){requestedFrame=frameIndex;queueCanvas();}
     cue.classList.toggle('hide',relativeScroll>step*0.06);
-    /* Плашки: экран 4 → первая (3..4), экран 5 → вторая (4..5), экран 6 → третья (5..6) */
+    /* Плашки: по одному логическому шагу (≈ 0,5 viewport) на каждую. */
     const panelIndex=relativeScroll<3*step?-1:Math.min(panels.length-1,Math.floor((relativeScroll-3*step)/step));
     if(panelIndex!==activePanel){
       panels.forEach((pl,i)=>{
