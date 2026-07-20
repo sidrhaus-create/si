@@ -304,15 +304,13 @@ section.blk{position:relative;padding:clamp(66px,11vw,130px) clamp(18px,5vw,64px
 #partners{background:
   radial-gradient(72% 84% at 8% 50%,rgba(139,74,156,.25),transparent 68%),
   linear-gradient(180deg,#3B1943 0%,#241028 100%);
-  height:auto;min-height:0;padding:80px 0 70px}
-#partners[hidden]{display:none!important}
+  position:relative;height:auto;min-height:0;padding:80px 0 70px;overflow:hidden}
 #partners .wrap{padding-inline:clamp(18px,5vw,64px)}
 .partners-marquee{margin-top:clamp(30px,5vw,54px);overflow:hidden;border-block:1px solid var(--stroke);
   background:rgba(93,47,106,.38);padding:18px 0}
-.partners-track{display:flex;width:max-content;will-change:transform}
-.partners-track.is-running{animation:partners-scroll 32s linear infinite}
+.partners-track{display:flex;width:max-content;will-change:transform;animation:partners-scroll 36s linear infinite}
 .partners-group{display:flex;align-items:center;gap:14px;padding-right:14px;flex:none}
-.partner-logo{width:clamp(170px,19vw,230px);height:96px;display:grid;place-items:center;flex:none;
+.partner-logo{width:max(clamp(170px,19vw,230px),calc((100vw - 126px)/9));height:96px;display:grid;place-items:center;flex:none;
   border-radius:18px;background:rgba(255,255,255,.055);padding:16px 20px}
 .partner-logo img{display:block;width:auto;height:auto;max-width:170px;max-height:64px;object-fit:contain}
 @keyframes partners-scroll{to{transform:translate3d(-50%,0,0)}}
@@ -497,5 +495,5 @@ footer li a:hover{opacity:1;text-decoration:underline}
   .ozon-track{scroll-behavior:auto}
   .partners-marquee{overflow-x:auto;scrollbar-width:none;-webkit-overflow-scrolling:touch}
   .partners-marquee::-webkit-scrollbar{display:none}
-  .partners-track,.partners-track.is-running{animation:none;transform:none}
+  .partners-track{animation:none;transform:none}
 }
