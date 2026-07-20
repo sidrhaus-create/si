@@ -1,0 +1,15 @@
+Положите реальные логотипы партнёров в эту папку.
+
+Рекомендуемый формат: SVG или прозрачный WebP/PNG.
+Рекомендуемая визуальная высота: 52–64 px.
+
+После загрузки замените элементы .partner-slot в tilda_T123_insert.html
+на изображения вида:
+
+<span class="partner-slot">
+  <img src="https://sidrhaus-create.github.io/si/assets/partners/logo.svg"
+       width="180" height="60" loading="lazy" decoding="async"
+       alt="Название партнёра">
+</span>
+
+Обе группы .partners-group должны содержать одинаковый набор логотипов.
