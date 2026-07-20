@@ -5,7 +5,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800;900&family=Caveat:wght@600;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="https://sidrhaus-create.github.io/si/zerocider.css?v=1100">
+<link rel="stylesheet" href="https://sidrhaus-create.github.io/si/zerocider.css?v=1110">
 <link rel="preload" as="image" fetchpriority="high" media="(min-width: 769px)" href="https://sidrhaus-create.github.io/si/assets/zerocider_asset_04_3cc9473f5b.webp">
 <link rel="preload" as="image" media="(min-width: 769px)" href="https://sidrhaus-create.github.io/si/assets/zerocider_asset_06_0042483a6d.webp">
 <link rel="preload" as="image" fetchpriority="high" media="(max-width: 768px)" href="https://sidrhaus-create.github.io/si/assets/mobile-frames/frame-01.webp">
@@ -467,33 +467,14 @@
 </section>
 
 <!-- ================= ПАРТНЁРЫ ================= -->
-<section class="blk" id="partners">
+<section class="blk" id="partners" hidden>
   <div class="wrap">
     <div class="kicker reveal">Нам доверяют</div>
     <h2 class="h-split">Партнёры</h2>
   </div>
-  <!--
-    Замените нейтральные слоты ниже на изображения из assets/partners/.
-    Две группы должны содержать одинаковый набор логотипов для бесшовного движения.
-  -->
   <div class="partners-marquee reveal" role="region" aria-label="Логотипы партнёров">
     <div class="partners-track">
-      <div class="partners-group">
-        <span class="partner-slot">Логотип партнёра</span>
-        <span class="partner-slot">Логотип партнёра</span>
-        <span class="partner-slot">Логотип партнёра</span>
-        <span class="partner-slot">Логотип партнёра</span>
-        <span class="partner-slot">Логотип партнёра</span>
-        <span class="partner-slot">Логотип партнёра</span>
-      </div>
-      <div class="partners-group" aria-hidden="true">
-        <span class="partner-slot">Логотип партнёра</span>
-        <span class="partner-slot">Логотип партнёра</span>
-        <span class="partner-slot">Логотип партнёра</span>
-        <span class="partner-slot">Логотип партнёра</span>
-        <span class="partner-slot">Логотип партнёра</span>
-        <span class="partner-slot">Логотип партнёра</span>
-      </div>
+      <div class="partners-group" data-partners-source></div>
     </div>
   </div>
 </section>
@@ -660,4 +641,4 @@
 
 <button id="backtotop" type="button" aria-label="Наверх"><span aria-hidden="true">↑</span></button>
 
-<script src="https://sidrhaus-create.github.io/si/zerocider.js?v=1100"></script>
+<script src="https://sidrhaus-create.github.io/si/zerocider.js?v=1110"></script>
