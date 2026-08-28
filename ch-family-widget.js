@@ -11,8 +11,8 @@
 #ch-family-widget.is-open .chfw-panel{transform:translateX(0);opacity:1;pointer-events:auto}
 #ch-family-widget .chfw-tab{width:46px;height:146px;border:1px solid rgba(255,255,255,.22);border-right:0;background:#5D2F6A;color:#fff;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;cursor:pointer;padding:10px 0;transition:background .25s ease}
 #ch-family-widget .chfw-tab:hover{background:#71407D}
-#ch-family-widget .chfw-mark{width:24px;height:24px;border:1px solid rgba(255,255,255,.72);border-radius:50%;display:grid;place-items:center;overflow:hidden}
-#ch-family-widget .chfw-mark:before{content:'';display:block;width:13px;height:16px;background:#fff;-webkit-mask:url('https://sidrhaus-create.github.io/si/assets/ch-phoenix.svg') center/contain no-repeat;mask:url('https://sidrhaus-create.github.io/si/assets/ch-phoenix.svg') center/contain no-repeat}
+#ch-family-widget .chfw-mark{width:24px;height:24px;border:1px solid rgba(255,255,255,.72);border-radius:50%;display:grid;place-items:center;overflow:hidden;background:#5D2F6A}
+#ch-family-widget .chfw-mark img{display:block;width:14px;height:17px;object-fit:contain;filter:brightness(0) invert(1)}
 #ch-family-widget .chfw-vertical{writing-mode:vertical-rl;transform:rotate(180deg);font-size:8px;font-weight:700;letter-spacing:.24em;white-space:nowrap;color:#fff}
 #ch-family-widget .chfw-eyebrow{font-size:8px;font-weight:700;letter-spacing:.28em;color:#d7b7e1;margin:0 0 12px}
 #ch-family-widget .chfw-title{font-size:18px;line-height:1.12;font-weight:800;letter-spacing:-.02em;margin:0 0 12px;color:#fff}
@@ -26,7 +26,7 @@
   #ch-family-widget{top:47%}
   #ch-family-widget .chfw-tab{width:38px;height:124px;gap:9px}
   #ch-family-widget .chfw-mark{width:21px;height:21px}
-  #ch-family-widget .chfw-mark:before{width:11px;height:14px}
+  #ch-family-widget .chfw-mark img{width:12px;height:15px}
   #ch-family-widget .chfw-vertical{font-size:7px;letter-spacing:.20em}
   #ch-family-widget .chfw-panel{width:min(286px,calc(100vw - 38px));min-height:176px;padding:22px 20px 20px}
   #ch-family-widget .chfw-title{font-size:16px}
@@ -45,10 +45,10 @@
           <div class="chfw-eyebrow">CIDER HOUSE FAMILY</div>
           <div class="chfw-title">ЧАСТЬ CIDER HOUSE</div>
           <p class="chfw-text">Zero Cider входит в семейство брендов Cider House.</p>
-          <a class="chfw-link" href="https://ciderhouse.ru/" target="_top" rel="noopener" aria-label="Перейти на сайт Cider House"><span>ПЕРЕЙТИ НА CIDER HOUSE</span><span>→</span></a>
+          <a class="chfw-link" href="https://ciderhouse.ru/" target="_blank" rel="noopener noreferrer" aria-label="Перейти на сайт Cider House"><span>ПЕРЕЙТИ НА CIDER HOUSE</span><span>→</span></a>
         </div>
         <button class="chfw-tab" type="button" aria-expanded="false" aria-label="Открыть Cider House family">
-          <span class="chfw-mark" aria-hidden="true"></span>
+          <span class="chfw-mark" aria-hidden="true"><img src="https://sidrhaus-create.github.io/si/assets/ch-phoenix.svg" alt=""></span>
           <span class="chfw-vertical">CIDER HOUSE</span>
         </button>
       </div>`;
