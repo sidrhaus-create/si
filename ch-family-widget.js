@@ -12,7 +12,7 @@
 #ch-family-widget .chfw-tab{width:46px;height:146px;border:1px solid rgba(255,255,255,.22);border-right:0;background:#5D2F6A;color:#fff;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;cursor:pointer;padding:10px 0;transition:background .25s ease}
 #ch-family-widget .chfw-tab:hover{background:#71407D}
 #ch-family-widget .chfw-mark{width:24px;height:24px;border:1px solid rgba(255,255,255,.72);border-radius:50%;display:grid;place-items:center;overflow:hidden}
-#ch-family-widget .chfw-mark:before{content:'';display:block;width:13px;height:16px;background:#fff;-webkit-mask:url('https://sidrhaus-create.github.io/bumble-coffee/assets/phoenix.svg') center/contain no-repeat;mask:url('https://sidrhaus-create.github.io/bumble-coffee/assets/phoenix.svg') center/contain no-repeat}
+#ch-family-widget .chfw-mark:before{content:'';display:block;width:13px;height:16px;background:#fff;-webkit-mask:url('https://sidrhaus-create.github.io/si/assets/ch-phoenix.svg') center/contain no-repeat;mask:url('https://sidrhaus-create.github.io/si/assets/ch-phoenix.svg') center/contain no-repeat}
 #ch-family-widget .chfw-vertical{writing-mode:vertical-rl;transform:rotate(180deg);font-size:8px;font-weight:700;letter-spacing:.24em;white-space:nowrap;color:#fff}
 #ch-family-widget .chfw-eyebrow{font-size:8px;font-weight:700;letter-spacing:.28em;color:#d7b7e1;margin:0 0 12px}
 #ch-family-widget .chfw-title{font-size:18px;line-height:1.12;font-weight:800;letter-spacing:-.02em;margin:0 0 12px;color:#fff}
